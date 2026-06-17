@@ -7,15 +7,11 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="newpage.css">
 </head>
 <body>
-
-    <nav class="navbar">
-        <a href="index.html" class="btn-navbar">Inicio</a>
-    </nav>
 
     <div class="bg-container">
         <div class="bg-glow-layer" id="glowLayer">
@@ -27,43 +23,57 @@
         <div class="bg-grid-layer" id="gridLayer"></div>
     </div>
 
-    <section class="hero-title-container">
-        <h1 class="title-original">Cuadriculando</h1>
-    </section>
+    <section class="hero-title-container" id="ambienteHero">
+        
+        <nav class="navbar-local">
+            <a href="index.html" class="btn-navbar">Inicio</a>
+        </nav>
 
-    <section class="scroll-section">
-        <button class="btn-comenzar" id="btnComenzar">
+        <div class="cuadricula-fondo"></div>
+        
+        <h1 class="title-original texto-fondo">Cuadriculando</h1>
+        
+        <p id="textPista" class="pista-interactiva">Junta los cuadros para descubrir el camino</p>
+        
+        <button class="btn-comenzar hidden-start" id="btnComenzar">
             <span id="btnText">Comenzar</span>
         </button>
+
+        <div class="cuadrado-acrilico verde" data-arrastrando="false"></div>
+        <div class="cuadrado-acrilico azul" data-arrastrando="false"></div>
+        <div class="cuadrado-acrilico rojo" data-arrastrando="false"></div>
+        <div class="cuadrado-acrilico amarillo" data-arrastrando="false"></div>
     </section>
 
     <section class="scroll-section" id="boardSection">
+        
+        <button class="btn-reset-puzzle" id="btnResetPuzzle">Reiniciar</button>
+
         <h2 class="section-instruction" id="instructionText">Elige un color</h2>
-        <div class="innovative-selector" id="mainSelector">
-            <div class="color-stripe stripe-azul" data-color="Azul"></div>
-            <div class="color-stripe stripe-amarillo" data-color="Amarillo"></div>
-            <div class="color-stripe stripe-rojo" data-color="Rojo"></div>
-            <div class="color-stripe stripe-verde" data-color="Verde"></div>
-        </div>
-    </section>
-
-    <section class="scroll-section section-pieces" id="piecesSection">
-        <div class="board-container" id="boardContainer">
-            <div class="personal-set" id="personalSet"></div>
-        </div>
-
-        <div class="interaction-controls" id="controlPanel">
-            <button class="vector-control-btn" id="btnCircle" title="Modo Ondas">
-                <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="38"/></svg>
-            </button>
-            <button class="vector-control-btn" id="btnStar" title="Modo Constelación Lineal">
-                <svg viewBox="0 0 100 100"><path d="M50,0 C50,35 65,50 100,50 C65,50 50,65 50,100 C50,65 35,50 0,50 C35,50 50,35 50,0 Z" fill="none"/></svg>
-            </button>
-
-            <div class="size-slider-container" id="sliderContainer">
-                <span>Escala</span>
-                <input type="range" id="sizeSlider" min="0.5" max="2.0" step="0.05" value="1">
+        
+        <div class="glass-remote-container" id="remoteContainer">
+            <div class="glass-remote-shuttle">
+                <button class="remote-option option-amarillo" data-color="Amarillo"><span class="option-icon">✦</span></button>
+                <button class="remote-option option-azul" data-color="Azul"><span class="option-icon">✦</span></button>
+                <button class="remote-option option-rojo" data-color="Rojo"><span class="option-icon">✦</span></button>
+                <button class="remote-option option-verde" data-color="Verde"><span class="option-icon">✦</span></button>
             </div>
+        </div>
+
+        <div class="puzzle-container hidden-puzzle" id="puzzleContainer">
+            <div class="color-back option-amarillo-bg" id="backAmarillo"></div>
+            <div class="color-back option-azul-bg" id="backAzul"></div>
+            <div class="color-back option-rojo-bg" id="backRojo"></div>
+            <div class="color-back option-verde-bg" id="backVerde"></div>
+            
+            <div class="cuadrado-negro-centro" id="btnNegroCentro">
+                <span class="center-star">✦</span>
+            </div>
+        </div>
+
+        <div class="nitidez-control-container" id="nitidezControl">
+            <label for="blurSlider">Etapas de la materia</label>
+            <input type="range" id="blurSlider" min="0" max="30" value="0" step="0.5">
         </div>
     </section>
 

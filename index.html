@@ -9,376 +9,124 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-dark-pure: #000000;
-            --grid-line: rgba(255, 255, 255, 0.04);
-            
-            /* Colores de tu tablero */
-            --color-amarillo: #fcf464;
-            --color-azul: #4c6cf4;
-            --color-rojo: #e4646c;
-            --color-verde: #94ec94;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: var(--bg-dark-pure);
-            color: #ffffff;
-            overflow-x: hidden;
-            font-family: 'Space Mono', monospace; 
-        }
-
-        /* ==========================================
-           BARRA DE NAVEGACIÓN
-           ========================================== */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: flex-end;
-            padding: 40px 60px;
-            z-index: 20; 
-        }
-
-        .btn-navegacion {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.85rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.5);
-            background: transparent;
-            border: none;
-            position: relative;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: color 0.4s ease;
-        }
-
-        .btn-navegacion::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--color-amarillo), transparent);
-            transition: width 0.4s ease, left 0.4s ease;
-        }
-
-        .btn-navegacion:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-        }
-
-        .btn-navegacion:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        /* ==========================================
-           GRILLA DE FONDO INTERACTIVA
-           ========================================== */
-        .bg-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, 40px);
-            grid-template-rows: repeat(auto-fill, 40px);
-            z-index: 1;
-            pointer-events: all;
-            
-            mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-            -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-        }
-
-        .grid-cell {
-            border-right: 1px solid var(--grid-line);
-            border-bottom: 1px solid var(--grid-line);
-            transition: background-color 2s cubic-bezier(0.1, 0.8, 0.2, 1); 
-        }
-
-        .grid-cell.active { transition: background-color 0s !important; }
-        .cell-amarillo { background-color: var(--color-amarillo) !important; }
-        .cell-azul { background-color: var(--color-azul) !important; }
-        .cell-rojo { background-color: var(--color-rojo) !important; }
-        .cell-verde { background-color: var(--color-verde) !important; }
-
-        /* ==========================================
-           SECCIÓN HERO (INICIAL)
-           ========================================== */
-        .hero-section {
-            position: relative;
-            z-index: 2;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none; 
-        }
-
-        .main-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;             
-            font-size: 5.5rem;            
-            letter-spacing: -2px;         
-            text-transform: uppercase;    
-            text-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
-        }
-
-        /* ==========================================
-           CONTENEDOR DE CONTENIDOS (VERTICAL)
-           ========================================== */
-        .interactive-section {
-            position: relative;
-            z-index: 3;
-            background-color: var(--bg-dark-pure);
-            padding: 60px 24px 120px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .content-column {
-            max-width: 800px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 40px; 
-        }
-
-        /* Tarjetas con Interacción de Fondo Seguidora de Cursor */
-        .bento-card {
-            background: rgba(10, 10, 12, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 45px;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: border-color 0.4s ease, transform 0.4s ease;
-            
-            /* Declaramos variables CSS por defecto para la posición de la luz (centro) */
-            --x: 50%;
-            --y: 50%;
-        }
-
-        /* Líneas de cuadrícula internas */
-        .bento-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 15%; width: 1px; height: 100%;
-            background: rgba(255, 255, 255, 0.02);
-            z-index: 1;
-        }
-        .bento-card::after {
-            content: '';
-            position: absolute;
-            top: 40%; left: 0; width: 100%; height: 1px;
-            background: rgba(255, 255, 255, 0.02);
-            z-index: 1;
-        }
-
-        .bento-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* La mancha de neón ahora usa las variables calculadas por JS para moverse */
-        .neon-glow {
-            position: absolute;
-            /* Usamos translate desfasado para centrar el círculo de luz en la punta del cursor */
-            left: var(--x);
-            top: var(--y);
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0; /* Oculta por defecto */
-            z-index: 0;
-            transition: opacity 0.4s ease, filter 0.4s ease;
-            pointer-events: none; /* No entorpece la selección de texto */
-        }
-
-        /* Al pasar el mouse por la caja, la luz se enciende elegantemente */
-        .bento-card:hover .neon-glow {
-            opacity: 0.25;
-            filter: blur(65px);
-        }
-
-        /* Tipografías */
-        .bento-card h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-            letter-spacing: -0.5px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .bento-card p {
-            color: #999999;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            position: relative;
-            z-index: 2;
-            transition: color 0.4s ease;
-        }
-
-        .bento-card:hover p {
-            color: #cccccc;
-        }
-
-        /* Asignación de colores de neón individuales */
-        .card-concept .neon-glow { background-color: var(--color-azul); }
-        .card-concept h3 { color: var(--color-azul); }
-
-        .card-what .neon-glow { background-color: var(--color-verde); }
-        .card-what h3 { color: var(--color-verde); }
-
-        .card-how .neon-glow { background-color: var(--color-amarillo); }
-        .card-how h3 { color: var(--color-amarillo); }
-
-        .card-mode .neon-glow { background-color: var(--color-rojo); }
-        .card-mode h3 { color: var(--color-rojo); }
-
-        .card-win .neon-glow { background-color: var(--color-verde); }
-        .card-win h3 { color: var(--color-verde); }
-    </style>
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="newpage.html" class="btn-navegacion">Página Experimental</a>
+        <a href="#inicio" class="btn-navegacion">Inicio</a>
+        <a href="#fundamento-sec" class="btn-navegacion">Fundamento</a>
+        <a href="newpage.html" class="btn-navegacion btn-jugar-destacado">Página Experimental</a>
     </nav>
 
     <div class="bg-grid" id="gridContainer"></div>
 
-    <!-- SECCIÓN 1: Bienvenida -->
-    <section class="hero-section">
+    <section class="hero-section" id="inicio">
         <h1 class="main-title">Cuadriculando</h1>
     </section>
 
-    <!-- SECCIÓN 2: Distribución Vertical con Fondos Interactivos -->
     <section class="interactive-section">
-        <div class="content-column">
+        <div class="row-container">
             
-            <!-- 1. FUNDAMENTO -->
-            <div class="bento-card card-concept">
-                <div class="neon-glow"></div>
-                <h3>Mi Conceptualización </h3>
-                <p>TEXTO....</p>
+            <div class="feature-row">
+                <div class="feature-image-block">
+                    <div class="image-placeholder icon-verde">
+                        <span class="star-decor">✦</span>
+                    </div>
+                </div>
+                <div class="feature-text-block">
+                    <span class="badge badge-verde">Concepto</span>
+                    <h3>¿Qué es Cuadriculando?</h3>
+                    <p>Cuadriculando es un juego de estrategia y sabotaje para 2 a 4 jugadores (mayores de 13 años) con una duración aproximada de 30 a 60 minutos. El objetivo principal es ser el primero en completar tu propia cuadrícula mediante la gestión de puntos y el uso de cartas especiales, mientras intentas bloquear el progreso de tus oponentes.</p>
+                </div>
             </div>
 
-            <!-- 2. ¿QUÉ ES CUADRICULANDO? -->
-            <div class="bento-card card-what">
-                <div class="neon-glow"></div>
-                <h3>¿Qué es Cuadriculando?</h3>
-                <p>Cuadriculando es un juego de estrategia y sabotaje para 2 a 4 jugadores (mayores de 13 años) con una duración aproximada de 30 a 60 minutos. El objetivo principal es ser el primero en completar tu propia cuadrícula mediante la gestión de puntos y el uso de cartas especiales, mientras intentas bloquear el progreso de tus oponentes.</p>
+            <div class="feature-row reverse">
+                <div class="feature-image-block">
+                    <div class="image-placeholder icon-amarillo">
+                        <span class="star-decor">✦</span>
+                    </div>
+                </div>
+                <div class="feature-text-block">
+                    <span class="badge badge-amarillo">Reglas básicas</span>
+                    <h3>¿Cómo se juega?</h3>
+                    <p>Al comenzar la partida, cada jugador gira la ruleta y quien obtenga el número más alto inicia el juego. Todos reciben 5 cartas de puntaje, 16 cuadros de su color, 4 cuadros de ataque y un peón. Durante cada turno, los jugadores avanzan por su propio sector del tablero y pueden colocar cuadros en su cuadrícula secreta. Para colocar cuadros es necesario pagar la cantidad exacta de puntos, pudiendo intercambiar cartas con otros jugadores si es necesario.</p>
+                </div>
             </div>
 
-            <!-- 3. ¿CÓMO SE JUEGA? -->
-            <div class="bento-card card-how">
-                <div class="neon-glow"></div>
-                <h3>¿Cómo se juega?</h3>
-                <p>Al comenzar la partida, cada jugador gira la ruleta y quien obtenga el número más alto inicia el juego. Todos reciben 5 cartas de puntaje, 16 cuadros de su color, 4 cuadros de ataque y un peón.
-Durante cada turno, los jugadores avanzan por su propio sector del tablero y pueden colocar cuadros en su cuadrícula secreta. Los cuadros de los bordes valen 10 puntos y los centrales 20 puntos.
-Cada vez que un jugador pasa por su inicio obtiene 3 cartas de puntaje, y al pasar por el centro recibe 2 cartas. Para colocar cuadros es necesario pagar la cantidad exacta de puntos, pudiendo intercambiar cartas con otros jugadores si es necesario.
-Los jugadores pueden cuadricular varias veces en un mismo turno mientras tengan suficientes puntos. El primero en completar toda su cuadrícula gana la partida
-</p>
+            <div class="feature-row">
+                <div class="feature-image-block">
+                    <div class="image-placeholder icon-rojo">
+                        <span class="star-decor">✦</span>
+                    </div>
+                </div>
+                <div class="feature-text-block">
+                    <span class="badge badge-rojo">Estrategia</span>
+                    <h3>La Modalidad</h3>
+                    <p>El juego combina estrategia, ataque y defensa. Los jugadores pueden invadir el área de un oponente para realizar ataques utilizando fichas especiales compradas con puntos. Estas permiten destruir cuadros enemigos o bloquear casillas. Para defenderse, un jugador puede usar cartas defensivas o recuperar la casilla afectada comprándola nuevamente desde la línea paralela correspondiente.</p>
+                </div>
             </div>
 
-            <!-- 4. MODALIDAD -->
-            <div class="bento-card card-mode">
-                <div class="neon-glow"></div>
-                <h3>La Modalidad</h3>
-                <p>El juego combina estrategia, ataque y defensa. Los jugadores pueden invadir el área de un oponente para realizar ataques utilizando fichas especiales compradas con puntos. Estas permiten destruir cuadros enemigos o bloquear casillas.
-
-Para defenderse, un jugador puede usar cartas defensivas o recuperar la casilla afectada comprándola nuevamente desde la línea paralela correspondiente.
-
-Además, existen cartas especiales como:
-
-Volteo: devuelve ataques o efectos negativos. Espiar: permite ver la cuadrícula secreta de otro jugador. Reubicación: mueve cuadros a casillas de mayor valor pagando la diferencia. Cartas de destrucción: eliminan cuadros enemigos si el jugador adivina correctamente su ubicación.
-</p>
-            </div>
-
-            <!-- 5. CÓMO SE GANA -->
-            <div class="bento-card card-win">
-                <div class="neon-glow"></div>
-                <h3>¿Cómo se gana?</h3>
-                <p>texto </p>
+            <div class="feature-row reverse">
+                <div class="feature-image-block">
+                    <div class="image-placeholder icon-verde">
+                        <span class="star-decor">✦</span>
+                    </div>
+                </div>
+                <div class="feature-text-block">
+                    <span class="badge badge-verde">Victoria</span>
+                    <h3>¿Cómo se gana?</h3>
+                    <p>La partida se detiene de forma definitiva coronando al estratega que logre completar con éxito y en primer lugar los 16 espacios modulares de su matriz personal, estableciendo el orden absoluto sobre las mecánicas de sabotaje contrincantes.</p>
+                </div>
             </div>
 
         </div>
     </section>
+<section class="carousel-3d-section">
+        <h2 class="carousel-title">Componentes del Juego</h2>
+        
+        <div class="carousel-3d-stage">
+            <div class="carousel-3d-track" id="carouselTrack">
+                <div class="carousel-3d-card" style="--card-index: 0;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+                <div class="carousel-3d-card" style="--card-index: 1;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+                <div class="carousel-3d-card" style="--card-index: 2;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+                <div class="carousel-3d-card" style="--card-index: 3;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+                <div class="carousel-3d-card" style="--card-index: 4;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+                <div class="carousel-3d-card" style="--card-index: 5;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+                <div class="carousel-3d-card" style="--card-index: 6;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+                <div class="carousel-3d-card" style="--card-index: 7;">
+                    <div class="card-glow-inner"></div>
+                    <span class="star-decor-3d">✦</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="fundamento-section" id="fundamento-sec">
+        <div class="fundamento-grid"></div>
+        <h2 class="fundamento-title">Fundamento</h2>
+    </section>
 
-    <!-- MOTOR DE COMPORTAMIENTO INTERACTIVO -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const container = document.getElementById('gridContainer');
-            const colors = ['cell-amarillo', 'cell-azul', 'cell-rojo', 'cell-verde'];
-            const cellSize = 40;
-
-            // 1. GENERACIÓN DE LA GRILLA DE FONDO
-            function generarGrilla() {
-                container.innerHTML = '';
-                const numCols = Math.ceil(window.innerWidth / cellSize);
-                const numRows = Math.ceil(window.innerHeight / cellSize);
-                const totalCells = numCols * numRows;
-
-                for (let i = 0; i < totalCells; i++) {
-                    const cell = document.createElement('div');
-                    cell.classList.add('grid-cell');
-                    const assignedColor = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    cell.addEventListener('mouseenter', () => {
-                        cell.classList.add('active', assignedColor);
-                        setTimeout(() => {
-                            cell.classList.remove('active', assignedColor);
-                        }, 300);
-                    });
-                    container.appendChild(cell);
-                }
-            }
-
-            generarGrilla();
-            window.addEventListener('resize', generarGrilla);
-
-            window.addEventListener('scroll', () => {
-                const scrollPercent = window.scrollY / window.innerHeight;
-                container.style.opacity = Math.max(0, 1 - scrollPercent * 1.5);
-            });
-
-            // 2. LÓGICA DE INTERACCIÓN INTEGRADA A LAS CAJAS (NUEVO)
-            const cards = document.querySelectorAll('.bento-card');
-            
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    // Calculamos la posición exacta del mouse relativa a los bordes de la caja
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-
-                    // Le inyectamos los pixeles dinámicamente al CSS de la tarjeta
-                    card.style.setProperty('--x', `${x}px`);
-                    card.style.setProperty('--y', `${y}px`);
-                });
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

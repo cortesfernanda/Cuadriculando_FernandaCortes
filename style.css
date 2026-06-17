@@ -1,16 +1,12 @@
-/* ==========================================
-   VARIABLES Y CONFIGURACIÓN BASE
-   ========================================== */
 :root {
-    --bg-color: #1a1a1a;        /* Gris oscuro de la grilla */
-    --bg-dark-pure: #000000;    /* Negro absoluto para la segunda sección */
-    --grid-line: rgba(255, 255, 255, 0.08);
+    --bg-dark-pure: #000000;
+    --bg-light-pure: #f4f4f7;
+    --grid-line: rgba(255, 255, 255, 0.04);
     
-    /* Paleta Cuadriculando */
-    --color-azul: #2b448c;
-    --color-amarillo: #f2c111;
-    --color-verde: #7faaa2;
-    --color-rojo: #ab534a;
+    --color-amarillo: #fcf464;
+    --color-azul: #4c6cf4;
+    --color-rojo: #e4646c;
+    --color-verde: #94ec94;
 }
 
 * {
@@ -20,110 +16,474 @@
 }
 
 body {
-    background-color: var(--bg-dark-pure); /* Fondo base negro absoluto */
-    font-family: 'Courier New', Courier, monospace;
+    background-color: var(--bg-dark-pure);
     color: #ffffff;
     overflow-x: hidden;
+    font-family: 'Space Mono', monospace; 
+    scroll-behavior: smooth;
+    transition: color 0.5s ease;
+}
+
+body.in-light {
+    color: #000000;
 }
 
 /* ==========================================
-   GRILLA DE FONDO (PRIMERA SECCIÓN)
+   BARRA DE NAVEGACIÓN (NAVBAR)
+   ========================================== */
+.navbar {
+    position: fixed; 
+    top: 30px; 
+    right: 40px;
+    width: auto;
+    display: flex;
+    gap: 10px;
+    padding: 10px 24px;
+    border-radius: 30px;
+    z-index: 100;
+    background-color: rgba(15, 15, 18, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
+}
+
+body.in-light .navbar {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.btn-navegacion {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.6); 
+    background: transparent;
+    border: none;
+    position: relative;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.btn-navegacion::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; width: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-amarillo), transparent);
+    transition: width 0.3s ease, left 0.3s ease;
+}
+
+.btn-navegacion:hover { color: #ffffff; }
+.btn-navegacion:hover::after { width: 100%; left: 0; }
+
+body.in-light .btn-navegacion { color: rgba(0, 0, 0, 0.5); }
+body.in-light .btn-navegacion:hover { color: #000000; }
+body.in-light .btn-navegacion::after { background: linear-gradient(90deg, transparent, var(--color-azul), transparent); }
+
+/* ==========================================
+   GRILLA INTERACTIVA DE PORTADA (BACKGROUND)
    ========================================== */
 .bg-grid {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0; width: 100vw; height: 100vh;
     display: grid;
     grid-template-columns: repeat(auto-fill, 40px);
     grid-template-rows: repeat(auto-fill, 40px);
-    z-index: 1;
-    pointer-events: all;
-    
-    /* Efecto de desvanecimiento: la grilla se vuelve negra abajo */
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
-    
+    z-index: 10; 
+    pointer-events: none; 
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
     transition: opacity 0.5s ease;
 }
 
 .grid-cell {
     border-right: 1px solid var(--grid-line);
     border-bottom: 1px solid var(--grid-line);
-    transition: background-color 1.2s ease;
+    pointer-events: auto; 
+    transition: background-color 3.5s cubic-bezier(0.1, 0.8, 0.2, 1);
 }
 
-.grid-cell:hover { transition: background-color 0s; }
-.cell-azul:hover { background-color: var(--color-azul); }
-.cell-amarillo:hover { background-color: var(--color-amarillo); }
-.cell-verde:hover { background-color: var(--color-verde); }
-.cell-rojo:hover { background-color: var(--color-rojo); }
+.grid-cell.active { transition: background-color 0s !important; }
+.cell-amarillo { background-color: var(--color-amarillo) !important; }
+.cell-azul { background-color: var(--color-azul) !important; }
+.cell-rojo { background-color: var(--color-rojo) !important; }
+.cell-verde { background-color: var(--color-verde) !important; }
 
+body.in-bento-zone .bg-grid,
+body.in-light .bg-grid {
+    opacity: 0 !important;
+    pointer-events: none;
+}
 
 /* ==========================================
-   ESTRUCTURA DE SECCIONES (SCROLL)
+   SECCIÓN 1: HERO (PANTALLA DE INICIO)
    ========================================== */
-
-/* Sección 1: Solo el título flotando */
 .hero-section {
     position: relative;
-    z-index: 2;
+    z-index: 15; 
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    pointer-events: none; /* Permite interactuar con la grilla de fondo */
+    pointer-events: none; 
 }
 
 .main-title {
-    font-size: 4rem;
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    font-weight: 900;
-    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-    pointer-events: auto; /* El título sí reacciona si quieres ponerle un clic/hover */
-    user-select: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;             
+    font-size: 7.5rem;             
+    letter-spacing: -3px;         
+    text-transform: uppercase;    
+    text-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
 }
 
-/* Sección 2: Espacio interactivo en fondo negro */
+/* ==========================================
+   SECCIÓN 2: FILAS INTERCALADAS (ALINEACIÓN SUPERIOR)
+   ========================================== */
 .interactive-section {
     position: relative;
-    z-index: 3; /* Se superpone a la grilla fija */
-    min-height: 100vh;
-    background-color: var(--bg-dark-pure); /* Fondo negro total */
-    padding: 80px 20px;
+    z-index: 25;
+    background-color: var(--bg-dark-pure); 
+    padding: 120px 24px;
+    display: flex;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s ease;
+}
+
+body.in-light .interactive-section {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.row-container {
+    max-width: 1050px; 
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 160px; 
+}
+
+/* Fila interactiva flexible alineada arriba visualmente */
+.feature-row {
+    display: flex;
+    align-items: flex-start; 
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Inversión ordenada de las columnas */
+.feature-row.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Bloque contenedor de la Imagen */
+.feature-image-block {
+    width: 45%; 
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Marco traslúcido flotante */
+.image-placeholder {
+    width: 100%;
+    height: 340px; 
+    background: transparent; 
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s ease, transform 0.4s ease;
+}
+
+.image-placeholder:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-4px);
+}
+
+.image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 11px;
+    position: relative;
+    z-index: 3;
+}
+
+/* Foco neón fluido trasero interactivo */
+.image-placeholder::before {
+    content: '';
+    position: absolute;
+    left: var(--x, 50%);
+    top: var(--y, 50%);
+    transform: translate(-50%, -50%);
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    filter: blur(50px);
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.image-placeholder:hover::before {
+    opacity: 0.25;
+}
+
+/* Paleta de neones traseros */
+.icon-verde::before { background-color: var(--color-verde); }
+.icon-amarillo::before { background-color: var(--color-amarillo); }
+.icon-rojo::before { background-color: var(--color-rojo); }
+
+/* Detalle de la estrella central */
+.star-decor {
+    font-size: 1.8rem;
+    opacity: 0.2;
+    z-index: 2;
+    position: relative;
+    transition: opacity 0.4s ease;
+}
+.image-placeholder:hover .star-decor {
+    opacity: 0.5;
+}
+
+/* Bloque de texto explicativo lateral */
+.feature-text-block {
+    width: 48%; 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* Aire extra a la derecha para las filas de Concepto y Estrategia */
+.feature-row:not(.reverse) .feature-text-block {
+    padding-left: 40px; 
+}
+
+/* Mantiene el texto al ras en las filas invertidas de Reglas y Victoria */
+.feature-row.reverse .feature-text-block {
+    padding-left: 0;
+}
+
+.feature-text-block h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 2.2rem; 
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    color: #ffffff;
+    line-height: 1.1;
+}
+
+.feature-text-block p {
+    color: #999999;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* Etiquetas de categorías (Badges) */
+.badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    display: inline-block;
+}
+
+.badge-verde { color: var(--color-verde); border-color: rgba(148, 236, 148, 0.2); }
+.icon-verde .star-decor { color: var(--color-verde); }
+
+.badge-amarillo { color: var(--color-amarillo); border-color: rgba(252, 244, 100, 0.2); }
+.icon-amarillo .star-decor { color: var(--color-amarillo); }
+
+.badge-rojo { color: var(--color-rojo); border-color: rgba(228, 100, 108, 0.2); }
+.icon-rojo .star-decor { color: var(--color-rojo); }
+
+/* ==========================================
+   CARRUSEL 3D INFINITO (CORRECCIÓN DE ESPACIOS)
+   ========================================== */
+.carousel-3d-section {
+    position: relative;
+    width: 100vw;
+    height: 120vh; /* Espacio extra de fondo negro vertical */
+    background-color: var(--bg-dark-pure);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    z-index: 35;
+    padding: 140px 0; /* Colchón generoso para separar el bloque del fundamento */
 }
 
-/* Contenedor de ideas para la zona negra */
-.interactive-container {
-    max-width: 900px;
-    width: 100%;
+.carousel-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: #ffffff;
+    margin-bottom: 100px; /* Separa el título del inicio del anillo */
     text-align: center;
 }
 
-.section-title {
-    font-size: 2rem;
-    margin-bottom: 40px;
-    letter-spacing: 4px;
-    color: var(--color-verde);
+/* Escenario de profundidad 3D de cámara */
+.carousel-3d-stage {
+    width: 100%;
+    height: 480px; 
+    perspective: 1200px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-/* Bloques interactivos de ejemplo para la zona negra */
-.demo-box {
-    background: #111;
-    border: 2px dashed #333;
-    padding: 40px;
-    margin: 20px 0;
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* Anillo giratorio tridimensional */
+.carousel-3d-track {
+    position: relative;
+    width: 220px;
+    height: 280px;
+    transform-style: preserve-3d;
+    animation: rotarAnillo3d 24s infinite linear;
+    will-change: transform;
 }
 
-.demo-box:hover {
-    border-color: var(--color-amarillo);
-    transform: scale(1.02);
+.carousel-3d-track:hover {
+    animation-play-state: paused;
+}
+
+/* Tarjetas acrílicas en perspectiva cilíndrica */
+.carousel-3d-card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(15, 15, 20, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    backface-visibility: visible;
+    transform: rotateY(calc(var(--card-index) * 45deg)) translateZ(320px);
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.carousel-3d-card:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+}
+
+.carousel-3d-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    pointer-events: none;
+}
+
+.card-glow-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.04), transparent 70%);
+    pointer-events: none;
+}
+
+.star-decor-3d {
+    font-size: 1.5rem;
+    opacity: 0.15;
+    color: #ffffff;
+}
+
+@keyframes rotarAnillo3d {
+    from { transform: rotateX(-6deg) rotateY(0deg); }
+    to { transform: rotateX(-6deg) rotateY(360deg); }
+}
+
+/* ==========================================
+   RESTRICTOR Y RESTAURACIÓN: FUNDAMENTO LÍQUIDO
+   ========================================== */
+.fundamento-section {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(244, 244, 247, 0); /* El JS maneja la opacidad de este color al mutar */
+    z-index: 4;
+}
+
+.fundamento-grid {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+    opacity: 0; 
+    background-image: 
+        linear-gradient(to right, #000000 1px, transparent 1px),
+        linear-gradient(to bottom, #000000 1px, transparent 1px);
+    background-size: 40px 40px;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.fundamento-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 7.5rem; 
+    letter-spacing: -3px;
+    text-transform: uppercase;
+    color: #000000; 
+    z-index: 2;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+}
+
+body.in-light .fundamento-title {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================
+   DISPOSITIVOS MÓVILES (RESPONSIVE)
+   ========================================== */
+@media (max-width: 850px) {
+    .feature-row, .feature-row.reverse {
+        flex-direction: column !important;
+        gap: 30px;
+    }
+    .feature-image-block, .feature-text-block {
+        width: 100% !important;
+        padding-left: 0 !important;
+    }
+    .feature-text-block h3 { font-size: 1.8rem; }
+    .row-container { gap: 90px; }
+    .main-title, .fundamento-title { font-size: 3.5rem; letter-spacing: -1px; }
+    .carousel-3d-stage { perspective: none; }
 }
