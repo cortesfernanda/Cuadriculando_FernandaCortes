@@ -9,7 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=2">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
 
@@ -82,49 +84,68 @@
 
         </div>
     </section>
-<section class="carousel-3d-section">
-        <h2 class="carousel-title">Componentes del Juego</h2>
+
+    <section class="carousel-linear-section">
+        <h2 class="carousel-linear-title">Componentes del Juego</h2>
         
-        <div class="carousel-3d-stage">
-            <div class="carousel-3d-track" id="carouselTrack">
-                <div class="carousel-3d-card" style="--card-index: 0;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
-                <div class="carousel-3d-card" style="--card-index: 1;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
-                <div class="carousel-3d-card" style="--card-index: 2;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
-                <div class="carousel-3d-card" style="--card-index: 3;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
-                <div class="carousel-3d-card" style="--card-index: 4;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
-                <div class="carousel-3d-card" style="--card-index: 5;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
-                <div class="carousel-3d-card" style="--card-index: 6;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
-                <div class="carousel-3d-card" style="--card-index: 7;">
-                    <div class="card-glow-inner"></div>
-                    <span class="star-decor-3d">✦</span>
-                </div>
+        <div class="marquee-infinite-container">
+            <div class="marquee-track">
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
+                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
             </div>
         </div>
     </section>
+
     <section class="fundamento-section" id="fundamento-sec">
         <div class="fundamento-grid"></div>
-        <h2 class="fundamento-title">Fundamento</h2>
+        
+        <div class="fundamento-container">
+            <h2 class="fundamento-title">Fundamento</h2>
+            
+            <div class="fundamento-layout-wrapper">
+                <div class="fundamento-content-left">
+                    <p>Para el diseño de esta página web se recopilaron y analizaron las principales características materiales del juego desarrollado en la unidad anterior. A partir de esta observación, se identificaron aquellos rasgos que resultan más representativos de Cuadriculando, destacando principalmente el uso del acrílico, la superposición de capas, las transparencias y el color negro como elemento visual predominante.</p>
+                    
+                    <p>Desde estas cualidades se investigaron algunas propiedades características del acrílico. Entre ellas, destaca la manera en que los colores se modifican al atravesar la luz y cómo la superposición de capas genera una sensación de profundidad y expansión espacial. Gracias a las transparencias, se producen efectos visuales en los que los colores se degradan, se mezclan o incluso desaparecen al acumularse en distintas capas. Como consecuencia, se pierde contraste y nitidez, apareciendo una especie de aura alrededor de las formas.</p>
+                    
+                    <p>La distancia entre las capas también influye significativamente en la percepción visual. Cuando estas se encuentran próximas entre sí, la imagen se aprecia con mayor definición, mientras que los colores se perciben intensos y concentrados. En cambio, al aumentar la separación entre las capas, las formas comienzan a difuminarse, transformándose en manchas más abstractas y expandiendo visualmente el color en el espacio.</p>
+                    
+                    <p>Otro aspecto fundamental de Cuadriculando es su marcada geometría. El juego se estructura a partir de cuadrados, generando recorridos y composiciones que enfatizan esta forma básica como elemento principal.</p>
+                </div>
+            </div>
+
+            <div class="casillas-modelos-grid">
+                
+                <div class="casilla-box">
+                    <div class="casilla-label">Renders 3D del acrílico </div>
+                    <div class="casilla-display-content bg-white-inner" id="three-acrylics-container"></div>
+                </div>
+
+                <div class="casilla-box">
+                    <div class="casilla-label">Modelos digital del acrílico </div>
+                    <div class="casilla-display-content bg-white-inner">
+                        <div id="contenedor-acrilicos-2d" class="contenedor-acrilicos">
+                            <div class="acrilico-2d verde-2d"></div>
+                            <div class="acrilico-2d amarillo-2d"></div>
+                            <div class="acrilico-2d rojo-2d"></div>
+                            <div class="acrilico-2d azul-2d"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
     </section>
 
     <script src="script.js"></script>

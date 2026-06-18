@@ -9,34 +9,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
     <link rel="stylesheet" href="newpage.css">
 </head>
 <body>
 
-    <div class="bg-container">
-        <div class="bg-glow-layer" id="glowLayer">
+    <div class="bg-container" id="backgroundLiquido">
+        <div class="bg-glow-layer">
             <div class="glow-bar bar-azul"></div>
             <div class="glow-bar bar-amarillo"></div>
             <div class="glow-bar bar-rojo"></div>
             <div class="glow-bar bar-verde"></div>
         </div>
-        <div class="bg-grid-layer" id="gridLayer"></div>
     </div>
 
-    <section class="hero-title-container" id="ambienteHero">
-        
+    <section class="hero-title-container" id="pantallaPortada">
         <nav class="navbar-local">
             <a href="index.html" class="btn-navbar">Inicio</a>
         </nav>
 
         <div class="cuadricula-fondo"></div>
-        
         <h1 class="title-original texto-fondo">Cuadriculando</h1>
         
         <p id="textPista" class="pista-interactiva">Junta los cuadros para descubrir el camino</p>
         
         <button class="btn-comenzar hidden-start" id="btnComenzar">
-            <span id="btnText">Comenzar</span>
+            <span>Comenzar</span>
         </button>
 
         <div class="cuadrado-acrilico verde" data-arrastrando="false"></div>
@@ -45,36 +44,30 @@
         <div class="cuadrado-acrilico amarillo" data-arrastrando="false"></div>
     </section>
 
-    <section class="scroll-section" id="boardSection">
-        
-        <button class="btn-reset-puzzle" id="btnResetPuzzle">Reiniciar</button>
+    <section class="prisma-section-light hidden-screen" id="prismaSection">
+        <div class="cuadricula-fondo-clara"></div>
 
-        <h2 class="section-instruction" id="instructionText">Elige un color</h2>
-        
-        <div class="glass-remote-container" id="remoteContainer">
-            <div class="glass-remote-shuttle">
-                <button class="remote-option option-amarillo" data-color="Amarillo"><span class="option-icon">✦</span></button>
-                <button class="remote-option option-azul" data-color="Azul"><span class="option-icon">✦</span></button>
-                <button class="remote-option option-rojo" data-color="Rojo"><span class="option-icon">✦</span></button>
-                <button class="remote-option option-verde" data-color="Verde"><span class="option-icon">✦</span></button>
-            </div>
+        <div id="three-prisma-canvas"></div>
+
+        <div class="star-trigger star-top hidden-star-trigger" data-target-layer="3">✦</div>
+        <div class="star-trigger star-right hidden-star-trigger" data-target-layer="2">✦</div>
+        <div class="star-trigger star-bottom hidden-star-trigger" data-target-layer="1">✦</div>
+        <div class="star-trigger star-left hidden-star-trigger" data-target-layer="0">✦</div>
+
+        <button class="btn-sutil-fase" id="btnRevelarBloque">
+            <span>Descomponer bloque negro</span>
+        </button>
+
+        <div class="menu-final-container hidden-menu" id="menuFinal">
+            <button class="btn-sutil-opcion" id="btnSiguienteRecorrido">Continuar recorrido</button>
+            <button class="btn-sutil-opcion" id="btnReiniciarPrisma">Reiniciar</button>
         </div>
 
-        <div class="puzzle-container hidden-puzzle" id="puzzleContainer">
-            <div class="color-back option-amarillo-bg" id="backAmarillo"></div>
-            <div class="color-back option-azul-bg" id="backAzul"></div>
-            <div class="color-back option-rojo-bg" id="backRojo"></div>
-            <div class="color-back option-verde-bg" id="backVerde"></div>
-            
-            <div class="cuadrado-negro-centro" id="btnNegroCentro">
-                <span class="center-star">✦</span>
-            </div>
-        </div>
+        <button class="btn-sutil-fase" id="btnSiguienteSeccion" style="display: none; position: absolute; right: 40px; bottom: 40px; padding: 12px 28px; border-radius: 20px; z-index: 100;">
+            <span>¿Seguir con el recorrido? ➔</span>
+        </button>
 
-        <div class="nitidez-control-container" id="nitidezControl">
-            <label for="blurSlider">Etapas de la materia</label>
-            <input type="range" id="blurSlider" min="0" max="30" value="0" step="0.5">
-        </div>
+        <p class="instruccion-prisma" id="textoGuia">Un prisma denso absorbe la luz sobre la cuadrícula</p>
     </section>
 
     <script src="newpage.js"></script>
