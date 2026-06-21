@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Nunito+Sans:ital,wght@0,300;0,400;0,600&family=Roboto:ital,wght@0,300;0,400;0,500&family=Space+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono:wght@400;700&family=Roboto:wght@300;400;500&display=swap');
 
 :root {
     --bg-dark-pure: #000000;
@@ -10,7 +10,8 @@
     --color-rojo: #e4646c;
     --color-verde: #94ec94;
     
-    --font-fundamento: 'Roboto', sans-serif; 
+    /* CORRECCIÓN: Tipografía unificada a Space Mono */
+    --font-fundamento: 'Space Mono', monospace; 
 }
 
 * {
@@ -25,15 +26,16 @@ body {
     overflow-x: hidden;
     font-family: 'Space Mono', monospace; 
     scroll-behavior: smooth;
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 0.8s ease, color 0.5s ease;
 }
 
 body.in-light {
-    color: #000000;
+    background-color: var(--bg-light-pure);
+    color: #111115;
 }
 
 /* ==========================================
-   BARRA DE NAVEGACIÓN (NAVBAR)
+   BARRA DE NAVEGACIÓN (NAVBAR EDITORIAL)
    ========================================== */
 .navbar {
     position: fixed; 
@@ -41,7 +43,8 @@ body.in-light {
     right: 40px;
     width: auto;
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 12px;
     padding: 10px 24px;
     border-radius: 30px;
     z-index: 100;
@@ -54,8 +57,8 @@ body.in-light {
 }
 
 body.in-light .navbar {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.08);
+    background-color: rgba(255, 255, 255, 0.75);
+    border-color: rgba(0, 0, 0, 0.06);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
@@ -89,8 +92,30 @@ body.in-light .btn-navegacion { color: rgba(0, 0, 0, 0.5); }
 body.in-light .btn-navegacion:hover { color: #000000; }
 body.in-light .btn-navegacion::after { background: linear-gradient(90deg, transparent, var(--color-azul), transparent); }
 
+/* BOTÓN DESTACADO EXPERIMENTAL */
+.btn-jugar-destacado {
+    background-color: #ffffff;
+    color: #000000 !important;
+    font-weight: 700;
+    border-radius: 20px;
+    padding: 6px 16px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+.btn-jugar-destacado::after { display: none !important; }
+.btn-jugar-destacado:hover {
+    background-color: var(--color-azul) !important;
+    color: #ffffff !important;
+    transform: scale(1.03);
+}
+
+body.in-light .btn-jugar-destacado {
+    background-color: #111115;
+    color: #ffffff !important;
+}
+
 /* ==========================================
-   GRILLA INTERACTIVA DE PORTADA (BACKGROUND)
+   GRILLA INTERACTIVA DE INICIO
    ========================================== */
 .bg-grid {
     position: fixed;
@@ -100,8 +125,8 @@ body.in-light .btn-navegacion::after { background: linear-gradient(90deg, transp
     grid-template-rows: repeat(auto-fill, 40px);
     z-index: 10; 
     pointer-events: none; 
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
     transition: opacity 0.5s ease;
 }
 
@@ -121,11 +146,11 @@ body.in-light .btn-navegacion::after { background: linear-gradient(90deg, transp
 body.in-bento-zone .bg-grid,
 body.in-light .bg-grid {
     opacity: 0 !important;
-    pointer-events: none;
+    pointer-events: none !important;
 }
 
 /* ==========================================
-   SECCIÓN 1: HERO
+   HERO SECCIÓN
    ========================================== */
 .hero-section {
     position: relative;
@@ -147,7 +172,7 @@ body.in-light .bg-grid {
 }
 
 /* ==========================================
-   SECCIÓN 2: FILAS INTERCALADAS (AURA REUNIFICADA)
+   FILAS INTERCALADAS (ESTRUCTURA DE LECTURA)
    ========================================== */
 .interactive-section {
     position: relative;
@@ -290,7 +315,7 @@ body.in-light .interactive-section {
 .icon-rojo .star-decor { color: var(--color-rojo); }
 
 /* ==========================================
-   MARQUEE INFINITO DE COMPONENTES
+   MARQUEE COMPONENTES MATERIALES
    ========================================== */
 .carousel-linear-section {
     position: relative;
@@ -303,6 +328,8 @@ body.in-light .interactive-section {
     flex-direction: column;
     align-items: center;
 }
+
+body.in-light .carousel-linear-section { display: none !important; }
 
 .carousel-linear-title {
     font-family: 'Montserrat', sans-serif;
@@ -348,10 +375,10 @@ body.in-light .interactive-section {
 }
 
 /* ==========================================
-   SECCIÓN 3: FUNDAMENTO LÍQUIDO CON CUADRÍCULA VISIBLE
+   SECCIÓN 3: FUNDAMENTO EDITORIAL CLARO
    ========================================== */
 .fundamento-section {
-    min-height: 200vh; 
+    min-height: 100vh; 
     width: 100vw;
     display: flex;
     align-items: center;
@@ -359,7 +386,7 @@ body.in-light .interactive-section {
     position: relative;
     overflow: hidden;
     z-index: 4;
-    padding: 180px 24px; 
+    padding: 140px 24px; 
 }
 
 .fundamento-grid {
@@ -368,8 +395,8 @@ body.in-light .interactive-section {
     z-index: 1;
     opacity: 0; 
     background-image: 
-        linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
     background-size: 40px 40px; 
     transition: opacity 0.6s ease;
     pointer-events: none;
@@ -385,7 +412,7 @@ body.in-light .interactive-section {
     align-items: center; 
     opacity: 0;
     transform: translateY(40px);
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
 }
 
 body.in-light .fundamento-container { opacity: 1; transform: translateY(0); }
@@ -395,8 +422,8 @@ body.in-light .fundamento-container { opacity: 1; transform: translateY(0); }
     font-weight: 900;
     font-size: 5rem;
     text-transform: uppercase;
-    color: #000000; 
-    margin-bottom: 110px; 
+    color: #111115; 
+    margin-bottom: 90px; 
     text-align: center; 
 }
 
@@ -404,41 +431,39 @@ body.in-light .fundamento-container { opacity: 1; transform: translateY(0); }
     display: flex;
     width: 100%;
     justify-content: center; 
-    margin-bottom: 120px; 
+    margin-bottom: 90px; 
 }
 
 .fundamento-content-left {
-    width: 62%; 
+    width: 65%; 
     display: flex;
     flex-direction: column;
-    gap: 38px; 
+    gap: 30px; 
 }
 
 .fundamento-content-left p {
     font-family: var(--font-fundamento) !important; 
     font-weight: 400 !important; 
-    font-size: 1.2rem !important; 
-    line-height: 1.9 !important; 
-    color: #1a1a1e !important; 
+    font-size: 1.15rem !important; 
+    line-height: 1.85 !important; 
+    color: #2b2b30 !important; 
     text-align: left !important; 
 }
 
 /* ==========================================
-   CASILLAS INTEGRALES DE EXPOSICIÓN (ANCHO AL 85%)
+   CASILLAS DE EXPOSICIÓN
    ========================================== */
 .casillas-modelos-grid {
     display: flex;
     justify-content: space-between;
-    width: 95%; 
+    width: 100%; 
     gap: 30px;
 }
 
 .casilla-box {
     flex: 1;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: #ffffff; 
+    border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 16px;
     padding: 28px;
     display: flex;
@@ -451,14 +476,15 @@ body.in-light .fundamento-container { opacity: 1; transform: translateY(0); }
     font-family: 'Space Mono', monospace;
     font-size: 0.8rem;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 700;
 }
 
 .casilla-display-content.bg-white-inner {
     width: 100%;
     height: 420px; 
-    background: #ffffff !important; 
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: #fdfdfd !important; 
+    border: 1px solid rgba(0, 0, 0, 0.04);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -467,7 +493,7 @@ body.in-light .fundamento-container { opacity: 1; transform: translateY(0); }
     position: relative;
 }
 
-/* --- CLASES DE SOPORTE PARA THREE.JS --- */
+/* THREEJS CONTENEDOR */
 #three-acrylics-container {
     width: 100%;
     height: 100%;
@@ -475,7 +501,7 @@ body.in-light .fundamento-container { opacity: 1; transform: translateY(0); }
 }
 #three-acrylics-container:active { cursor: grabbing; }
 
-/* --- CLASES DE SOPORTE PARA MUESTRA 2D CON BLOOM --- */
+/* MUESTRA BLOOM 2D */
 .contenedor-acrilicos {
     display: flex;
     gap: 24px;
@@ -490,26 +516,27 @@ body.in-light .fundamento-container { opacity: 1; transform: translateY(0); }
     height: 90px;
     border-radius: 12px;
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: transform;
 }
+.acrilico-2d:hover { transform: scale(1.08); }
 
 .verde-2d {
     background: linear-gradient(135deg, rgba(68, 212, 68, 0.9), rgba(39, 174, 96, 0.7));
-    box-shadow: 0 8px 25px 0 rgba(68, 212, 68, 0.3), 0 0 16px 4px rgba(68, 212, 68, 0.18);
+    box-shadow: 0 8px 25px 0 rgba(68, 212, 68, 0.25), 0 0 16px 4px rgba(68, 212, 68, 0.15);
 }
 .amarillo-2d {
     background: linear-gradient(135deg, rgba(244, 228, 36, 0.95), rgba(243, 156, 18, 0.7));
-    box-shadow: 0 8px 25px 0 rgba(244, 228, 36, 0.3), 0 0 16px 4px rgba(244, 228, 36, 0.18);
+    box-shadow: 0 8px 25px 0 rgba(244, 228, 36, 0.25), 0 0 16px 4px rgba(244, 228, 36, 0.15);
 }
 .rojo-2d {
     background: linear-gradient(135deg, rgba(228, 52, 68, 0.9), rgba(192, 41, 43, 0.7));
-    box-shadow: 0 8px 25px 0 rgba(228, 52, 68, 0.3), 0 0 16px 4px rgba(228, 52, 68, 0.18);
+    box-shadow: 0 8px 25px 0 rgba(228, 52, 68, 0.25), 0 0 16px 4px rgba(228, 52, 68, 0.15);
 }
 .azul-2d {
     background: linear-gradient(135deg, rgba(20, 68, 244, 0.9), rgba(41, 128, 185, 0.7));
-    box-shadow: 0 8px 25px 0 rgba(20, 68, 244, 0.3), 0 0 16px 4px rgba(20, 68, 244, 0.18);
+    box-shadow: 0 8px 25px 0 rgba(20, 68, 244, 0.25), 0 0 16px 4px rgba(20, 68, 244, 0.15);
 }
 
 /* RESPONSIVE */

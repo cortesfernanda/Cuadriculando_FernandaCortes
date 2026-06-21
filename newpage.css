@@ -10,19 +10,11 @@
     --color-verde-glow: rgba(148, 236, 148, 0.28);
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    background-color: #ffffff;
-    color: #111115;
-    font-family: 'Space Mono', monospace;
-    overflow: hidden; 
-    width: 100vw;
-    height: 100vh;
+    background-color: #ffffff; color: #111115; font-family: 'Space Mono', monospace;
+    overflow: hidden; width: 100vw; height: 100vh;
 }
 
 /* NAVBAR */
@@ -37,7 +29,7 @@ body {
 .btn-navbar::after { content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 1px; background: linear-gradient(90deg, transparent, #000000, transparent); transition: width 0.3s ease, left 0.3s ease; }
 .btn-navbar:hover { color: #000000; } .btn-navbar:hover::after { width: 100%; left: 0; }
 
-/* FONDOS LÍQUIDOS ANIMADOS (PORTADA) */
+/* FONDOS LÍQUIDOS ANIMADOS */
 .bg-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; background: linear-gradient(135deg, #ffffff 0%, #f4f6fa 100%); transition: opacity 0.5s ease; }
 .bg-glow-layer { position: absolute; width: 100%; height: 100%; overflow: hidden; }
 .glow-bar { position: absolute; width: 110vh; height: 110vh; border-radius: 50%; background: radial-gradient(circle, var(--bar-color) 0%, rgba(255,255,255,0) 75%); mix-blend-mode: multiply; animation: fluidMovement 16s infinite ease-in-out alternate; }
@@ -49,6 +41,7 @@ body {
 
 /* PORTADA CONFIGURACIÓN */
 .hero-title-container { height: 100vh; width: 100vw; position: relative; z-index: 10; overflow: hidden; background-color: #ffffff; transition: opacity 0.6s ease, visibility 0.6s; }
+.hero-title-container.hidden-screen { opacity: 0; visibility: hidden; pointer-events: none; }
 .cuadricula-fondo { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.06; background-image: linear-gradient(to right, #000000 1px, transparent 1px), linear-gradient(to bottom, #000000 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; }
 .texto-fondo { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) !important; margin: 0; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 8.5vw; letter-spacing: -6px; text-transform: uppercase; color: rgba(0, 0, 0, 0.07); text-align: center; user-select: none; z-index: 2; pointer-events: none; }
 .pista-interactiva { position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%); font-family: 'Space Mono', monospace; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(0, 0, 0, 0.5); z-index: 30; transition: opacity 0.4s ease, transform 0.4s ease; text-align: center; width: 100%; }
@@ -67,30 +60,41 @@ body {
 
 /* CUADRADOS PORTADA */
 .cuadrado-acrilico { position: absolute; width: 260px; height: 260px; border-radius: 8px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1.5px solid rgba(255, 255, 255, 0.5); mix-blend-mode: multiply; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.02); cursor: grab; z-index: 3; transition: transform 0.4s ease-out, box-shadow 0.3s ease; }
+.cuadrado-acrilico.dragging { transform: scale(1.08) !important; cursor: grabbing !important; z-index: 20 !important; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15), 0 0 20px rgba(255, 255, 255, 0.4) !important; }
 .cuadrado-acrilico.verde { background-color: rgba(40, 167, 69, 0.45); top: 15%; left: 22%; }
 .cuadrado-acrilico.azul { background-color: rgba(0, 123, 255, 0.45); top: 26%; left: 36%; }
 .cuadrado-acrilico.rojo { background-color: rgba(220, 53, 69, 0.45); top: 40%; left: 48%; }
 .cuadrado-acrilico.amarillo { background-color: rgba(255, 193, 7, 0.5); top: 52%; left: 60%; }
-
-/* ==========================================
-   PANTALLA 2: LA CASILLA BLANCA CON EL PRISMA
-   ========================================== */
-.prisma-section-light {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background-color: #f4f4f7 !important; 
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 1;
-    visibility: visible;
-    transition: background-color 1.2s cubic-bezier(0.25, 1, 0.5, 1), color 0.6s ease;
+.cuadrado-acrilico.spin-scale-down {
+    transform: translate(-50%, -50%) rotate(720deg) scale(0) !important;
+    left: 50% !important;
+    top: 50% !important;
+    opacity: 0;
+    transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.8s ease;
+}
+.hero-title-container.transitioning .texto-fondo {
+    filter: blur(20px);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    transition: filter 0.8s ease, opacity 0.8s ease, transform 0.8s ease;
+}
+.hero-title-container.transitioning .btn-comenzar {
+    filter: blur(10px);
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+    transition: all 0.5s ease;
 }
 
-/* Switches para ocultar/mostrar pantallas */
-.hidden-screen { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+/* SECCIÓN PRISMA (PANTALLA 2) */
+.prisma-section-light {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #f4f4f7; z-index: 50;
+    display: flex; align-items: center; justify-content: center; opacity: 1; visibility: visible;
+    transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.prisma-section-light.inspeccion-activa {
+    background-color: #111115 !important;
+}
+.prisma-section-light.hidden-screen { display: none !important; }
 
 .cuadricula-fondo-clara { 
     position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.05; 
@@ -98,115 +102,117 @@ body {
     background-size: 40px 40px; pointer-events: none; 
 }
 
-#three-prisma-canvas {
-    width: 500px;
-    height: 500px;
-    position: relative;
-    z-index: 51;
-}
+/* Permitir interacción en el Canvas full screen */
+#three-prisma-canvas { width: 100vw; height: 100vh; position: absolute; top: 0; left: 0; z-index: 5; pointer-events: auto; cursor: grab; }
+#three-prisma-canvas:active { cursor: grabbing; }
 
-/* ESTRELLAS DE REVELACIÓN (OCULTABLES) */
-.star-trigger {
-    position: absolute;
-    font-size: 2.2rem;
-    color: rgba(11, 11, 21, 0.35); 
-    cursor: pointer;
-    z-index: 60;
-    user-select: none;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, color 0.3s ease;
-}
-.star-trigger:hover {
-    color: #111115;
-    transform: scale(1.3) rotate(45deg);
-}
-
-/* Switches para ocultar/mostrar las estrellas */
-.hidden-star-trigger { opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; transform: scale(0.5); }
-.reveal-star-trigger { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; transform: scale(1); }
-
-.star-top    { top: 12%; left: 50%; transform: translateX(-50%); }
-.star-right  { top: 50%; right: 15%; transform: translateY(-50%); }
-.star-bottom { bottom: 12%; left: 50%; transform: translateX(-50%); }
-.star-left   { top: 50%; left: 15%; transform: translateY(-50%); }
-
-/* BOTONES SUTILES DE ACCIÓN DE FASE (DISEÑO EDITORIAL FINO) */
+/* BOTONES INFERIORES REGULADOS (BAJADOS A 75PX DE LA ESCENA) */
 .btn-sutil-fase {
-    position: absolute;
-    bottom: 90px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.6);
-    background: transparent;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    padding: 12px 28px;
-    border-radius: 20px;
-    cursor: pointer;
-    z-index: 70;
-    transition: all 0.3s ease;
+    position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%);
+    font-family: 'Space Mono', monospace; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--color-azul); background: rgba(255, 255, 255, 0.75); border: 1.5px solid rgba(76, 108, 244, 0.3); padding: 12px 28px; border-radius: 20px; cursor: pointer; 
+    z-index: 999; pointer-events: auto; transition: all 0.3s ease;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
 }
-.btn-sutil-fase:hover {
-    color: #000000;
-    border-color: #000000;
-    background-color: rgba(0,0,0,0.02);
-}
-.btn-sutil-fase.fade-out-btn {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transform: translateY(10px);
-}
+.btn-sutil-fase:hover { color: #ffffff; border-color: var(--color-azul); background-color: var(--color-azul); transform: translateX(-50%) scale(1.03); box-shadow: 0 8px 20px rgba(76, 108, 244, 0.25); }
 
-/* MENÚ FINAL COMPUESTO DE REINICIO Y SEGUIMIENTO */
-.menu-final-container {
-    position: absolute;
-    bottom: 90px;
-    display: flex;
-    gap: 16px;
-    z-index: 70;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-.hidden-menu { opacity: 0; visibility: hidden; transform: translateY(15px); pointer-events: none; }
-.reveal-menu { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+.menu-final-container { position: absolute; bottom: 75px; left: 50%; transform: translateX(-50%); display: flex; gap: 16px; z-index: 999; pointer-events: auto; transition: opacity 0.5s ease; }
+.hidden-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+.reveal-menu { opacity: 1; visibility: visible; pointer-events: auto; }
 
 .btn-sutil-opcion {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: rgba(0, 0, 0, 0.5);
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 10px 24px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    font-family: 'Space Mono', monospace; font-size: 0.75rem; letter-spacing: 1.5px; text-transform: uppercase; padding: 10px 24px; border-radius: 20px; cursor: pointer;
+    background: rgba(255, 255, 255, 0.85); border: 1.5px solid rgba(76, 108, 244, 0.25); color: var(--color-azul); transition: all 0.3s ease;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
-.btn-sutil-opcion:hover {
-    color: #000000;
-    border-color: rgba(0,0,0,0.3);
-}
-.btn-sutil-opcion.opcion-seguir {
-    background-color: #111115;
-    color: #ffffff;
-    border-color: #111115;
-}
-.btn-sutil-opcion.opcion-seguir:hover {
-    background-color: #000000;
-    color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+.btn-sutil-opcion:hover { color: #ffffff; border-color: var(--color-azul); background-color: var(--color-azul); box-shadow: 0 8px 20px rgba(76, 108, 244, 0.2); }
+
+/* ==========================================
+   PANTALLA OSCURA (CUADRÍCULA AGRANDADA)
+   ========================================== */
+.cuadricula-fondo-oscura {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; opacity: 0.12;
+    background-image: linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px);
+    background-size: 90px 90px; pointer-events: none;
 }
 
-.instruccion-prisma {
-    position: absolute;
-    bottom: 40px;
-    font-size: 0.72rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.4);
-    text-align: center;
-    z-index: 55;
-    width: 100%;
+/* BOTÓN DE LA SUERTE TOTALMENTE CENTRADO Y VISIBLE */
+.btn-sutil-fase-oscura {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-family: 'Space Mono', monospace; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+    color: #ffffff; background: transparent; border: 1px solid rgba(255, 255, 255, 0.3); 
+    padding: 16px 36px; border-radius: 30px; cursor: pointer; z-index: 999; pointer-events: auto; transition: all 0.3s ease;
 }
+.btn-sutil-fase-oscura:hover {
+    color: #ffffff; border-color: #ffffff; background-color: rgba(255,255,255,0.1);
+    box-shadow: 0 0 25px rgba(255,255,255,0.25);
+}
+
+/* OVERLAY DE VICTORIA */
+.pantalla-victoria {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #000000;
+    z-index: 2000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.8s ease, visibility 0.8s;
+}
+.pantalla-victoria.reveal-screen {
+    opacity: 1; visibility: visible;
+}
+.victoria-card {
+    background: transparent; border: none; box-shadow: none;
+    text-align: center; max-width: 700px; width: 90%; transform: scale(0.95); transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.pantalla-victoria.reveal-screen .victoria-card {
+    transform: scale(1);
+}
+.victoria-titulo {
+    font-family: 'Montserrat', sans-serif; font-size: clamp(1.5rem, 6.5vw, 5.5rem); font-weight: 900; text-transform: uppercase;
+    color: #ffffff; letter-spacing: -4px; margin-bottom: 45px; display: flex; justify-content: center; flex-wrap: nowrap;
+    user-select: none;
+}
+.victoria-letra {
+    display: inline-block; opacity: 0; transform: translateY(20px); filter: blur(6px);
+    animation: revealLetter 0.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+@keyframes revealLetter {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+.victoria-botones {
+    display: flex; justify-content: center; gap: 20px; opacity: 0; transform: translateY(10px);
+    animation: revealButtons 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 1.6s;
+}
+@keyframes revealButtons {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* BOTÓN FINALIZAR FLOTANTE FASE 4 */
+.btn-finalizar-flotante {
+    position: absolute;
+    bottom: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.btn-finalizar-flotante.hidden-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(20px);
+    pointer-events: none;
+}
+.btn-finalizar-flotante.reveal-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+/* PANEL HUD FASE 4 REMOVIDO */

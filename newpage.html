@@ -45,29 +45,33 @@
     </section>
 
     <section class="prisma-section-light hidden-screen" id="prismaSection">
-        <div class="cuadricula-fondo-clara"></div>
+        <div class="cuadricula-fondo-clara" id="rejillaClara"></div>
 
         <div id="three-prisma-canvas"></div>
 
-        <div class="star-trigger star-top hidden-star-trigger" data-target-layer="3">✦</div>
-        <div class="star-trigger star-right hidden-star-trigger" data-target-layer="2">✦</div>
-        <div class="star-trigger star-bottom hidden-star-trigger" data-target-layer="1">✦</div>
-        <div class="star-trigger star-left hidden-star-trigger" data-target-layer="0">✦</div>
 
-        <button class="btn-sutil-fase" id="btnRevelarBloque">
-            <span>Descomponer bloque negro</span>
-        </button>
 
         <div class="menu-final-container hidden-menu" id="menuFinal">
-            <button class="btn-sutil-opcion" id="btnSiguienteRecorrido">Continuar recorrido</button>
-            <button class="btn-sutil-opcion" id="btnReiniciarPrisma">Reiniciar</button>
+            <button class="btn-sutil-opcion" id="btnSiguienteRecorrido">Seguir con el recorrido</button>
         </div>
 
-        <button class="btn-sutil-fase" id="btnSiguienteSeccion" style="display: none; position: absolute; right: 40px; bottom: 40px; padding: 12px 28px; border-radius: 20px; z-index: 100;">
+        <button class="btn-sutil-fase" id="btnSiguienteSeccion" style="display: none; position: absolute; right: 40px; bottom: 50px; padding: 12px 28px; border-radius: 20px; z-index: 100;">
             <span>¿Seguir con el recorrido? ➔</span>
         </button>
 
-        <p class="instruccion-prisma" id="textoGuia">Un prisma denso absorbe la luz sobre la cuadrícula</p>
+        <!-- Botón flotante para finalizar en la Fase 4 (Laboratorio Óptico Rediseñado) -->
+        <button class="btn-sutil-opcion btn-finalizar-flotante hidden-menu" id="btnFinalizarJuegoFlotante">Finalizar Recorrido</button>
+
+        <!-- Overlay de victoria interactivo -->
+        <div class="pantalla-victoria hidden-screen" id="pantallaVictoria">
+            <div class="victoria-card">
+                <div class="victoria-titulo" id="victoriaTitulo"></div>
+                <div class="victoria-botones">
+                    <button class="btn-sutil-opcion" id="btnIrInicio">Inicio Experimental</button>
+                    <button class="btn-sutil-opcion" id="btnIrIndex">Página Principal</button>
+                </div>
+            </div>
+        </div>
     </section>
 
     <script src="newpage.js"></script>

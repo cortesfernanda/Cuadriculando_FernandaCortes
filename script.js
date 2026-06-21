@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     generarGrilla();
     window.addEventListener('resize', generarGrilla);
 
-    // 2. CONTROL DE SCROLL: COMPORTAMIENTO LÍQUIDO Y APAGADO DE GRILLA
+    // 2. CONTROL DE SCROLL: MUTACIÓN LÍQUIDA DE ENTORNO
     const fundamentoSec = document.getElementById('fundamento-sec');
     const fundamentoGrid = document.querySelector('.fundamento-grid');
 
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fundamentoSec.style.backgroundColor = `rgba(244, 244, 247, ${fadePercent})`;
 
-            if (fadePercent >= 0.6) {
+            if (fadePercent >= 0.55) {
                 document.body.classList.add('in-light');
                 if (fundamentoGrid) fundamentoGrid.style.opacity = '1';
             } else {
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 3. SEGUIMIENTO DEL MOUSE EN LOS MARCOS DE IMAGEN (AURAS NEÓN)
+    // 3. SEGUIMIENTO DEL MOUSE EN MARCOS DE IMAGEN (AURAS)
     const imagePlaceholders = document.querySelectorAll('.image-placeholder');
     imagePlaceholders.forEach(placeholder => {
         placeholder.addEventListener('mousemove', (e) => {
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 4. SMOOTH SCROLL PARA LOS BOTONES DE LA NAVBAR
+    // 4. SMOOTH SCROLL PARA LOS BOTONES
     const links = document.querySelectorAll('.btn-navegacion');
     links.forEach(link => {
         link.addEventListener('click', (e) => {
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ==========================================
-    // 5. MOTOR INTEGRADO DE THREE.JS (CAPAS COMPACTAS Y SOLIDAS)
+    // 5. MOTOR THREE.JS: PLACAS INTERCALADAS COMPACTAS
     // ==========================================
     const canvas3DContainer = document.getElementById('three-acrylics-container');
     
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer3D.setSize(width, height);
         renderer3D.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer3D.setClearColor(0xffffff, 1); 
+        renderer3D.setClearColor(0xf4f4f7, 1); // Forzamos el color de bitácora clara desde el núcleo
         canvas3DContainer.appendChild(renderer3D.domElement);
 
         const grupoAcrilicos = new THREE.Group();
@@ -133,10 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const geometry = new THREE.BoxGeometry(tamano, tamano, thickness);
 
         const coloresConfig = [
-            { hex: 0x44d444, index: -1.5 }, 
-            { hex: 0xf4e424, index: -0.5 }, 
-            { hex: 0xe43444, index: 0.5 },  
-            { hex: 0x1444f4, index: 1.5 }   
+            { hex: 0x94ec94, index: -1.5 }, // Verde calibrado
+            { hex: 0xfcf464, index: -0.5 }, // Amarillo calibrado
+            { hex: 0xe4646c, index: 0.5 },  // Rojo calibrado
+            { hex: 0x4c6cf4, index: 1.5 }   // Azul calibrado
         ];
 
         const separacionZ = 1.3; 
@@ -145,11 +145,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const material3D = new THREE.MeshPhysicalMaterial({
                 color: config.hex,
                 transparent: true,
-                opacity: 0.88,        
-                roughness: 0.01,     
+                opacity: 0.85,        
+                roughness: 0.02,     
                 metalness: 0.02,
-                transmission: 0.35,  
-                ior: 1.52,           
+                transmission: 0.4,  
+                ior: 1.50,           
                 clearcoat: 1.0,      
                 clearcoatRoughness: 0.02,
                 side: THREE.DoubleSide
@@ -157,8 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const placaMesh = new THREE.Mesh(geometry, material3D);
             placaMesh.position.set(0, 0, config.index * separacionZ);
-            
-            // Agregamos usando el método .add() correcto de Three.js
             grupoAcrilicos.add(placaMesh);
         });
 
@@ -179,8 +177,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const deltaX = clientX - prevMousePosition.x;
             const deltaY = clientY - prevMousePosition.y;
 
-            grupoAcrilicos.rotation.y += deltaX * 0.01;
-            grupoAcrilicos.rotation.x += deltaY * 0.01;
+            grupoAcrilicos.rotation.y += deltaX * 0.007;
+            grupoAcrilicos.rotation.x += deltaY * 0.007;
 
             prevMousePosition = { x: clientX, y: clientY };
         };
@@ -212,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ==========================================
-    // 6. MUESTRA ACRÍLICOS 2D (MICRO-MOVIMIENTO REACTIVO)
+    // 6. MICRO-MOVIMIENTO REACTIVO 2D
     // ==========================================
     const contenedor2D = document.getElementById('contenedor-acrilicos-2d');
     
