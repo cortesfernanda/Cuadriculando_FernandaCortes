@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secuencia de Juego - Cuadriculando</title>
+    <title>Página Experimental - Cuadriculando</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,9 +55,10 @@
             <button class="btn-sutil-opcion" id="btnSiguienteRecorrido">Seguir con el recorrido</button>
         </div>
 
-        <button class="btn-sutil-fase" id="btnSiguienteSeccion" style="display: none; position: absolute; right: 40px; bottom: 50px; padding: 12px 28px; border-radius: 20px; z-index: 100;">
-            <span>¿Seguir con el recorrido? ➔</span>
-        </button>
+        <!-- Indicador de Clic Animado (Tutorial Simplificado) -->
+        <div id="indicadorClic" class="indicador-clic-container" style="opacity: 0; pointer-events: none;">
+            <div class="indicador-texto">Haz click</div>
+        </div>
 
         <!-- Botón flotante para finalizar en la Fase 4 (Laboratorio Óptico Rediseñado) -->
         <button class="btn-sutil-opcion btn-finalizar-flotante hidden-menu" id="btnFinalizarJuegoFlotante">Finalizar Recorrido</button>
@@ -73,6 +74,16 @@
             </div>
         </div>
     </section>
+
+    <!-- Pantalla de transición animada de salida -->
+    <div id="transitionOverlay" class="transition-overlay">
+        <div class="transition-squares-container">
+            <div class="trans-square square-azul"></div>
+            <div class="trans-square square-rojo"></div>
+            <div class="trans-square square-amarillo"></div>
+            <div class="trans-square square-verde"></div>
+        </div>
+    </div>
 
     <script src="newpage.js"></script>
 </body>

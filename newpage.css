@@ -1,13 +1,13 @@
 :root {
-    --color-amarillo: #fcf464;
-    --color-azul: #4c6cf4;
-    --color-rojo: #e4646c;
-    --color-verde: #94ec94;
+    --color-amarillo: #ffc107;
+    --color-azul: #007bff;
+    --color-rojo: #dc3545;
+    --color-verde: #28a745;
 
-    --color-azul-glow: rgba(76, 108, 244, 0.25);
-    --color-amarillo-glow: rgba(252, 244, 100, 0.35);
-    --color-rojo-glow: rgba(228, 100, 108, 0.24);
-    --color-verde-glow: rgba(148, 236, 148, 0.28);
+    --color-azul-glow: rgba(0, 123, 255, 0.25);
+    --color-amarillo-glow: rgba(255, 193, 7, 0.35);
+    --color-rojo-glow: rgba(220, 53, 69, 0.24);
+    --color-verde-glow: rgba(40, 167, 69, 0.28);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -196,23 +196,143 @@ body {
 /* BOTÓN FINALIZAR FLOTANTE FASE 4 */
 .btn-finalizar-flotante {
     position: absolute;
-    bottom: 45px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 30px;
+    right: 40px;
     z-index: 1000;
-    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    transform-origin: right center;
+    transform: translateY(0) scale(1);
 }
 .btn-finalizar-flotante.hidden-menu {
     opacity: 0;
     visibility: hidden;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateY(-10px) scale(1);
     pointer-events: none;
 }
 .btn-finalizar-flotante.reveal-menu {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0) scale(1);
     pointer-events: auto;
+}
+.btn-finalizar-flotante.reveal-menu:hover {
+    color: #000000 !important;
+    background: transparent !important;
+    transform: translateY(0) scale(1.06);
 }
 
 /* PANEL HUD FASE 4 REMOVIDO */
+
+/* INDICADOR DE CLIC ANIMADO (FASE 3 - SIMPLIFICADO) */
+.indicador-clic-container {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    font-family: 'Space Mono', monospace;
+}
+.indicador-texto {
+    color: #6a6a7c;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    text-align: center;
+}
+
+/* OVERLAY DE TRANSICIÓN ANIMADA DE SALIDA */
+.transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.4s ease, visibility 0.4s;
+}
+.transition-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.transition-squares-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rotateContainer 1.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+.trans-square {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    opacity: 0.75;
+    mix-blend-mode: multiply;
+}
+.square-azul {
+    background-color: var(--color-azul);
+    animation: expandSquareAzul 1.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+.square-rojo {
+    background-color: var(--color-rojo);
+    animation: expandSquareRojo 1.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+.square-amarillo {
+    background-color: var(--color-amarillo);
+    animation: expandSquareAmarillo 1.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+.square-verde {
+    background-color: var(--color-verde);
+    animation: expandSquareVerde 1.4s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+
+@keyframes rotateContainer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes expandSquareAzul {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-26px, -26px) rotate(-90deg); }
+    100% { transform: translate(0, 0) rotate(-180deg); }
+}
+@keyframes expandSquareRojo {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(26px, -26px) rotate(90deg); }
+    100% { transform: translate(0, 0) rotate(180deg); }
+}
+@keyframes expandSquareAmarillo {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(26px, 26px) rotate(-90deg); }
+    100% { transform: translate(0, 0) rotate(-180deg); }
+}
+@keyframes expandSquareVerde {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    50% { transform: translate(-26px, 26px) rotate(90deg); }
+    100% { transform: translate(0, 0) rotate(180deg); }
+}

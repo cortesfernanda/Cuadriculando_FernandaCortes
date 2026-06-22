@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuadriculando — Portada y Fundamento</title>
+    <title>Cuadriculando</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=13">
 </head>
 <body>
 
     <nav class="navbar">
         <a href="#inicio" class="btn-navegacion">Inicio</a>
-        <a href="#fundamento-sec" class="btn-navegacion">Fundamento</a>
         <a href="newpage.html" class="btn-navegacion btn-jugar-destacado">Página Experimental ➔</a>
     </nav>
+
+    <!-- Nubes y Paisajes Acrílicos Nebulosos en el fondo (Estilo Bilexer) -->
+    <div class="misty-container">
+        <div class="misty-shape misty-verde"></div>
+        <div class="misty-shape misty-azul"></div>
+        <div class="misty-shape misty-rojo"></div>
+        <div class="misty-shape misty-amarillo"></div>
+        <div class="misty-shape misty-bloom"></div>
+    </div>
 
     <div class="bg-grid" id="gridContainer"></div>
 
@@ -27,127 +36,6 @@
         <h1 class="main-title">Cuadriculando</h1>
     </section>
 
-    <section class="interactive-section">
-        <div class="row-container">
-            
-            <div class="feature-row">
-                <div class="feature-image-block">
-                    <div class="image-placeholder icon-verde">
-                        <span class="star-decor">✦</span>
-                    </div>
-                </div>
-                <div class="feature-text-block">
-                    <span class="badge badge-verde">Concepto</span>
-                    <h3>¿Qué es Cuadriculando?</h3>
-                    <p>Cuadriculando es un juego de estrategia y sabotaje para 2 a 4 jugadores (mayores de 13 años) con una duración aproximada de 30 a 60 minutos. El objetivo principal es ser el primero en completar tu propia cuadrícula mediante la gestión de puntos y el uso de cartas especiales, mientras intentas bloquear el progreso de tus oponentes.</p>
-                </div>
-            </div>
-
-            <div class="feature-row reverse">
-                <div class="feature-image-block">
-                    <div class="image-placeholder icon-amarillo">
-                        <span class="star-decor">✦</span>
-                    </div>
-                </div>
-                <div class="feature-text-block">
-                    <span class="badge badge-amarillo">Reglas básicas</span>
-                    <h3>¿Cómo se juega?</h3>
-                    <p>Al comenzar la partida, cada jugador gira la ruleta y quien obtenga el número más alto inicia el juego. Todos reciben 5 cartas de puntaje, 16 cuadros de su color, 4 cuadros de ataque y un peón. Durante cada turno, los jugadores avanzan por su propio sector del tablero y pueden colocar cuadros en su cuadrícula secreta. Para colocar cuadros es necesario pagar la cantidad exacta de puntos, pudiendo intercambiar cartas con otros jugadores si es necesario.</p>
-                </div>
-            </div>
-
-            <div class="feature-row">
-                <div class="feature-image-block">
-                    <div class="image-placeholder icon-rojo">
-                        <span class="star-decor">✦</span>
-                    </div>
-                </div>
-                <div class="feature-text-block">
-                    <span class="badge badge-rojo">Estrategia</span>
-                    <h3>La Modalidad</h3>
-                    <p>El juego combina estrategia, ataque y defensa. Los jugadores pueden invadir el área de un oponente para realizar ataques utilizando fichas especiales compradas con puntos. Estas permiten destruir cuadros enemigos o bloquear casillas. Para defenderse, un jugador puede usar cartas defensivas o recuperar la casilla afectada comprándola nuevamente desde la línea paralela correspondiente.</p>
-                </div>
-            </div>
-
-            <div class="feature-row reverse">
-                <div class="feature-image-block">
-                    <div class="image-placeholder icon-verde">
-                        <span class="star-decor">✦</span>
-                    </div>
-                </div>
-                <div class="feature-text-block">
-                    <span class="badge badge-verde">Victoria</span>
-                    <h3>¿Cómo se gana?</h3>
-                    <p>La partida se detiene de forma definitiva coronando al estratega que logre completar con éxito y en primer lugar los 16 espacios modulares de su matriz personal, estableciendo el orden absoluto sobre las mecánicas de sabotaje contrincantes.</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section class="carousel-linear-section">
-        <h2 class="carousel-linear-title">Componentes del Juego</h2>
-        
-        <div class="marquee-infinite-container">
-            <div class="marquee-track">
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-                <div class="square-card-component"><span class="star-decor-square">✦</span></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="fundamento-section" id="fundamento-sec">
-        <div class="fundamento-grid" id="fGrid"></div>
-        
-        <div class="fundamento-container">
-            <h2 class="fundamento-title">Fundamento</h2>
-            
-            <div class="fundamento-layout-wrapper">
-                <div class="fundamento-content-left">
-                    <p>Para el diseño de esta página web se recopilaron y analizaron las principales características materiales del juego desarrollado en la unidad anterior. A partir de esta observación, se identificaron aquellos rasgos que resultan más representativos de Cuadriculando, destacando principalmente el uso del acrílico, la superposición de capas, las transparencias y el color negro como elemento visual predominante.</p>
-                    
-                    <p>Desde estas cualidades se investigaron algunas propiedades características del acrílico. Entre ellas, destaca la manera en que los colores se modifican al atravesar la luz y cómo la superposición de capas genera una sensación de profundidad y expansión espacial. Gracias a las transparencias, se producen efectos visuales en los que los colores se degradan, se mezclan o incluso desaparecen al acumularse en distintas capas. Como consecuencia, se pierde contraste y nitidez, apareciendo una especie de aura alrededor de las formas.</p>
-                    
-                    <p>La distancia entre las capas también influye significativamente en la percepción visual. Cuando estas se encuentran próximas entre sí, la imagen se aprecia con mayor definición, mientras que los colores se perciben intensos y concentrados. En cambio, al aumentar la separación entre las capas, las formas comienzan a difuminarse, transformándose en manchas más abstractas y expandiendo visualmente el color en el espacio.</p>
-                    
-                    <p>Otro aspecto fundamental de Cuadriculando es su marcada geometría. El juego se estructura a partir de cuadrados, generando recorridos y composiciones que enfatizan esta forma básica como elemento principal.</p>
-                </div>
-            </div>
-
-            <div class="casillas-modelos-grid">
-                
-                <div class="casilla-box">
-                    <div class="casilla-label">Renders 3D del acrílico</div>
-                    <div class="casilla-display-content bg-white-inner" id="three-acrylics-container"></div>
-                </div>
-
-                <div class="casilla-box">
-                    <div class="casilla-label">Modelos digital del acrílico</div>
-                    <div class="casilla-display-content bg-white-inner">
-                        <div id="contenedor-acrilicos-2d" class="contenedor-acrilicos">
-                            <div class="acrilico-2d verde-2d"></div>
-                            <div class="acrilico-2d amarillo-2d"></div>
-                            <div class="acrilico-2d rojo-2d"></div>
-                            <div class="acrilico-2d azul-2d"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-    <script src="script.js"></script>
+    <script src="script.js?v=13"></script>
 </body>
 </html>

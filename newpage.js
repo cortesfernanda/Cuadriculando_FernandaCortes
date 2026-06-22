@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const menuFinal = document.getElementById('menuFinal');
     const btnSiguienteRecorrido = document.getElementById('btnSiguienteRecorrido');
     const btnReiniciarPrisma = document.getElementById('btnReiniciarPrisma');
-    const btnSiguienteSeccion = document.getElementById('btnSiguienteSeccion');
+
     
     // Selectores fase oscura
     const rejillaClara = document.getElementById('rejillaClara');
@@ -171,6 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const hacesDeLuzFase4 = []; // Guarda las mallas de los haces de luz proyectados
     const rejillaInteractiva = []; // Celdas de la cuadrícula interactiva de fondo
     const particulasInteractivas = []; // Partículas de brillo (chispas) que flotan en el sandbox
+    let timerBotonFinalizar = null;
     
     // Partículas y feedback de Fase 2
     const cristalesExplosion = [];
@@ -380,7 +381,7 @@ document.addEventListener("DOMContentLoaded", () => {
             menuFinal.classList.add('hidden-menu');
             menuFinal.style.display = ''; 
         }
-        if (btnSiguienteSeccion) btnSiguienteSeccion.style.display = 'none';
+
 
         const width = window.innerWidth;
         const height = window.innerHeight;
@@ -946,31 +947,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     cubo.position.z += (posDestinoZ - cubo.position.z) * 0.1;
 
                     // Dinámica reactiva al hover y pérdida de nitidez (difuminación)
-                    let baseOpacity = (0.85 - (targetSeparacion * 0.55)) * prog;
+                    let baseOpacity = (0.42 - (targetSeparacion * 0.15)) * prog;
                     let targetOpacity = baseOpacity;
-                    let targetScale = (1.0 + (targetSeparacion * 0.6)) * prog;
+                    const scaleMod = cubo.userData.scaleModifier || 1.0;
+                    let targetScale = (1.0 + (targetSeparacion * 0.6)) * prog * scaleMod;
                     let hoverSpin = 0;
 
                     if (cubo.uuid === hoveredUuid && prog >= 1.0) {
-                        targetScale = 2.2; 
+                        targetScale = 2.2 * scaleMod; 
                         hoverSpin = 0.25; 
-                        targetOpacity = 0.75; 
+                        targetOpacity = 0.55; 
                     }
 
                     cubo.scale.x += (targetScale - cubo.scale.x) * 0.15;
                     cubo.scale.y += (targetScale - cubo.scale.y) * 0.15;
                     cubo.scale.z += (targetScale - cubo.scale.z) * 0.15;
 
-                    // Aplicar opacidad, brillo de autoluminiscencia y aspereza física al material
+                    // Aplicar opacidad y aspereza física al material (sin emisividad para mezclar colores puros)
                     if (cubo.material) {
                         cubo.material.opacity += (targetOpacity - cubo.material.opacity) * 0.15;
-                        
-                        // Brillo emissive dinámico (brilla con más intensidad al pasar el mouse por encima)
-                        let targetEmissiveIntensity = 0.18;
-                        if (cubo.uuid === hoveredUuid && prog >= 1.0) {
-                            targetEmissiveIntensity = 0.45;
-                        }
-                        cubo.material.emissiveIntensity += (targetEmissiveIntensity - cubo.material.emissiveIntensity) * 0.15;
                         
                         // Perder nitidez reflejante (se vuelve más rugoso al separarse o al pasar el cursor)
                         let targetRoughness = 0.1 + (targetSeparacion * 0.8) + (cubo.uuid === hoveredUuid && prog >= 1.0 ? 0.4 : 0);
@@ -1085,12 +1080,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         clickesDeCubosRealizados = 0;
-        if (btnSiguienteSeccion) { 
-            btnSiguienteSeccion.style.display = 'none'; // Hidden until 3 cubes are clicked
-            btnSiguienteSeccion.style.right = 'auto';
-            btnSiguienteSeccion.style.left = '50%';
-            btnSiguienteSeccion.style.transform = 'translateX(-50%)';
-            btnSiguienteSeccion.style.bottom = '75px'; 
+
+        // Mostrar el indicador animado que indica qué hacer
+        const indicador = document.getElementById('indicadorClic');
+        if (indicador) {
+            indicador.style.opacity = '1';
+            indicador.style.transform = 'translate(-50%, -50%) scale(1)';
         }
 
         // Paleta de colores unificada y configuraciones de creación para la lluvia de cubitos en Fase 3
@@ -1102,12 +1097,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const colorHex = coloresPaleta[i % coloresPaleta.length];
             const matCubo = new THREE.MeshPhysicalMaterial({
                 color: colorHex,
-                emissive: colorHex, // Restablece el brillo cálido del acrilico
-                emissiveIntensity: 0.18,
                 transparent: true, 
                 opacity: 0.0, 
-                roughness: 0.15, 
-                transmission: 0.0, // Sin refracción interna
+                roughness: 0.1, 
+                metalness: 0.1,
+                clearcoat: 1.0,
                 side: THREE.DoubleSide, 
                 depthWrite: false
             });
@@ -1199,12 +1193,21 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         cuadraditosFundamento.length = 0;
 
-        if (btnSiguienteSeccion) btnSiguienteSeccion.style.display = 'none';
+
         
+        // Ocultar botón inicialmente y mostrarlo de forma sutil tras 1.5 segundos
         if (btnFinalizarJuegoFlotante) {
-            btnFinalizarJuegoFlotante.classList.remove('hidden-menu');
-            btnFinalizarJuegoFlotante.classList.add('reveal-menu');
+            btnFinalizarJuegoFlotante.classList.remove('reveal-menu');
+            btnFinalizarJuegoFlotante.classList.add('hidden-menu');
         }
+
+        clearTimeout(timerBotonFinalizar);
+        timerBotonFinalizar = setTimeout(() => {
+            if (faseEfectosActiva && btnFinalizarJuegoFlotante) {
+                btnFinalizarJuegoFlotante.classList.remove('hidden-menu');
+                btnFinalizarJuegoFlotante.classList.add('reveal-menu');
+            }
+        }, 1500);
 
         // Asegurar fondo blanco en Fase 4
         if (prismaSection) {
@@ -1260,13 +1263,22 @@ document.addEventListener("DOMContentLoaded", () => {
             luzCentral = null;
         }
 
-        // 1. Crear el Foco de Luz Central (draggable)
+        // 1. Crear el Foco de Luz Central de Cristal (draggable y refractivo)
         luzCentral = new THREE.Mesh(
             new THREE.SphereGeometry(0.38, 32, 32),
-            new THREE.MeshBasicMaterial({
+            new THREE.MeshPhysicalMaterial({
                 color: 0xffffff,
+                roughness: 0.05,
+                metalness: 0.1,
+                transmission: 0.9,      // Efecto cristalino translúcido
+                thickness: 1.2,         // Grosor para refracción
+                ior: 1.5,               // Índice de refracción de vidrio estándar
+                clearcoat: 1.0,         // Brillo exterior lacado
+                clearcoatRoughness: 0.05,
                 transparent: true,
-                opacity: 0.95
+                opacity: 1.0,
+                emissive: 0xffffff,     // Auto-brillo sutil interno
+                emissiveIntensity: 0.15
             })
         );
         luzCentral.name = "luzCentral";
@@ -1332,75 +1344,72 @@ document.addEventListener("DOMContentLoaded", () => {
         faseEfectosActiva = true;
     }
 
-    if (btnSiguienteSeccion) {
-        btnSiguienteSeccion.addEventListener('click', () => {
-            if (btnSiguienteSeccion) btnSiguienteSeccion.style.display = 'none';
+    function iniciarTransicionFase4() {
+        faseFundamentoActiva = false; // Desactivar clics de la fase 3
+        faseTransicion3a4 = true;
+        transicionTime = 0;
+        morphers = [];
+        
+        // Definición de destinos y colores para los morphers (los 4 cubos de Fase 3 que se fusionan para crear Fase 4)
+        const morpherConfigs = [
+            { colorHex: 0x007bff, targetPos: new THREE.Vector3(-2.2, 1.2, 0), name: 'azul' },
+            { colorHex: 0xdc3545, targetPos: new THREE.Vector3(2.2, 1.2, 0), name: 'rojo' },
+            { colorHex: 0xffc107, targetPos: new THREE.Vector3(-2.2, -1.2, 0), name: 'amarillo' },
+            { colorHex: 0x28a745, targetPos: new THREE.Vector3(2.2, -1.2, 0), name: 'verde' }
+        ];
+        
+        const chosenIndices = new Set();
+        
+        morpherConfigs.forEach(cfg => {
+            const foundIdx = cuadraditosFundamento.findIndex((cubo, idx) => {
+                if (chosenIndices.has(idx)) return false;
+                const hex = cubo.material.color.getHex();
+                // Emparejar cubos por color exacto
+                return hex === cfg.colorHex;
+            });
             
-            faseFundamentoActiva = false; // Desactivar clics de la fase 3
-            faseTransicion3a4 = true;
-            transicionTime = 0;
-            morphers = [];
-            
-            // Definición de destinos y colores para los morphers (los 4 cubos de Fase 3 que se fusionan para crear Fase 4)
-            const morpherConfigs = [
-                { colorHex: 0x007bff, targetPos: new THREE.Vector3(-2.2, 1.2, 0), name: 'azul' },
-                { colorHex: 0xdc3545, targetPos: new THREE.Vector3(2.2, 1.2, 0), name: 'rojo' },
-                { colorHex: 0xffc107, targetPos: new THREE.Vector3(-2.2, -1.2, 0), name: 'amarillo' },
-                { colorHex: 0x28a745, targetPos: new THREE.Vector3(2.2, -1.2, 0), name: 'verde' }
-            ];
-            
-            const chosenIndices = new Set();
-            
-            morpherConfigs.forEach(cfg => {
-                const foundIdx = cuadraditosFundamento.findIndex((cubo, idx) => {
-                    if (chosenIndices.has(idx)) return false;
-                    const hex = cubo.material.color.getHex();
-                    // Emparejar cubos por color exacto
-                    return hex === cfg.colorHex;
-                });
-                
-                if (foundIdx > -1) {
-                    chosenIndices.add(foundIdx);
-                    const mesh = cuadraditosFundamento[foundIdx];
+            if (foundIdx > -1) {
+                chosenIndices.add(foundIdx);
+                const mesh = cuadraditosFundamento[foundIdx];
+                mesh.userData.isMorpher = true;
+                mesh.userData.targetPos = cfg.targetPos;
+                mesh.userData.name = cfg.name;
+                morphers.push(mesh);
+            }
+        });
+        
+        // Respaldar si falta algún color por distribución aleatoria
+        morpherConfigs.forEach(cfg => {
+            const alreadyMatched = morphers.some(m => m.userData.name === cfg.name);
+            if (!alreadyMatched) {
+                const freeIdx = cuadraditosFundamento.findIndex((c, idx) => !chosenIndices.has(idx));
+                if (freeIdx > -1) {
+                    chosenIndices.add(freeIdx);
+                    const mesh = cuadraditosFundamento[freeIdx];
                     mesh.userData.isMorpher = true;
                     mesh.userData.targetPos = cfg.targetPos;
                     mesh.userData.name = cfg.name;
+                    mesh.material.color.setHex(cfg.colorHex);
+                    mesh.material.needsUpdate = true;
                     morphers.push(mesh);
                 }
-            });
-            
-            // Respaldar si falta algún color por distribución aleatoria
-            morpherConfigs.forEach(cfg => {
-                const alreadyMatched = morphers.some(m => m.userData.name === cfg.name);
-                if (!alreadyMatched) {
-                    const freeIdx = cuadraditosFundamento.findIndex((c, idx) => !chosenIndices.has(idx));
-                    if (freeIdx > -1) {
-                        chosenIndices.add(freeIdx);
-                        const mesh = cuadraditosFundamento[freeIdx];
-                        mesh.userData.isMorpher = true;
-                        mesh.userData.targetPos = cfg.targetPos;
-                        mesh.userData.name = cfg.name;
-                        mesh.material.color.setHex(cfg.colorHex);
-                        mesh.material.emissive.setHex(cfg.colorHex);
-                        morphers.push(mesh);
-                    }
-                }
-            });
-            
-            // Configurar gravedad para el resto de cubitos
-            cuadraditosFundamento.forEach(cubo => {
-                if (!cubo.userData.isMorpher) {
-                    cubo.userData.fallVelY = (Math.random() * 0.04) + 0.02;
-                    cubo.userData.fallVelX = (Math.random() - 0.5) * 0.03;
-                    cubo.userData.fallVelZ = (Math.random() - 0.5) * 0.03;
-                }
-            });
+            }
+        });
+        
+        // Configurar gravedad para el resto de cubitos
+        cuadraditosFundamento.forEach(cubo => {
+            if (!cubo.userData.isMorpher) {
+                cubo.userData.fallVelY = (Math.random() * 0.04) + 0.02;
+                cubo.userData.fallVelX = (Math.random() - 0.5) * 0.03;
+                cubo.userData.fallVelZ = (Math.random() - 0.5) * 0.03;
+            }
         });
     }
 
     if (btnFinalizarJuegoFlotante) {
         btnFinalizarJuegoFlotante.addEventListener('click', () => {
             faseEfectosActiva = false;
+            clearTimeout(timerBotonFinalizar);
             
             prismasFase4.forEach(p => {
                 if (scene) scene.remove(p);
@@ -1463,7 +1472,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnIrIndex = document.getElementById('btnIrIndex');
     if (btnIrIndex) {
         btnIrIndex.addEventListener('click', () => {
-            window.location.href = 'index.html';
+            ejecutarTransicionFinal(() => {
+                window.location.href = 'index.html';
+            });
         });
     }
 
@@ -1625,14 +1636,28 @@ document.addEventListener("DOMContentLoaded", () => {
             if (intersects.length > 0) {
                 const clickedCubo = intersects[0].object;
                 
-                // Incrementar contador si es un clic en un cubo único
-                if (!clickedCubo.userData.clickeado) {
-                    clickedCubo.userData.clickeado = true;
-                    clickesDeCubosRealizados++;
-                    if (clickesDeCubosRealizados >= 3) {
-                        if (btnSiguienteSeccion) {
-                            btnSiguienteSeccion.style.display = 'block';
-                        }
+                clickesDeCubosRealizados++;
+                
+                // Ocultar el indicador de clic tutorial en el primer clic
+                const indicador = document.getElementById('indicadorClic');
+                if (indicador) {
+                    indicador.style.opacity = '0';
+                    setTimeout(() => indicador.remove(), 500);
+                }
+
+                if (clickesDeCubosRealizados >= 5) {
+                    iniciarTransicionFase4();
+                    return;
+                }
+
+                // Cambiar el tamaño del cubo clickeado
+                clickedCubo.userData.scaleModifier = 0.5 + Math.random() * 1.5;
+
+                // También cambiar de tamaño a otros 4 cubos aleatorios para dar variedad física
+                for (let i = 0; i < 4; i++) {
+                    const randCubo = cuadraditosFundamento[Math.floor(Math.random() * cuadraditosFundamento.length)];
+                    if (randCubo && randCubo !== clickedCubo) {
+                        randCubo.userData.scaleModifier = 0.4 + Math.random() * 1.4;
                     }
                 }
 
@@ -1654,11 +1679,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (cubo.material) {
                             const originalColor = cubo.material.color.getHex();
                             cubo.material.color.setHex(0xffffff);
-                            cubo.material.emissive.setHex(0xffffff);
                             setTimeout(() => {
                                 if (cubo && cubo.material) {
                                     cubo.material.color.setHex(originalColor);
-                                    cubo.material.emissive.setHex(originalColor);
                                 }
                             }, 250);
                         }
@@ -1679,71 +1702,89 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnIrInicio = document.getElementById('btnIrInicio');
     if (btnIrInicio) {
         btnIrInicio.addEventListener('click', () => {
-            // Ocultar pantalla de victoria
-            if (pantallaVictoria) {
-                pantallaVictoria.classList.remove('reveal-screen');
-                pantallaVictoria.classList.add('hidden-screen');
-            }
-            
-            // Ocultar sección de prisma y volver a portada
-            if (prismaSection) {
-                prismaSection.classList.add('hidden-screen');
-                prismaSection.style.backgroundColor = '';
-            }
-            if (pantallaPortada) pantallaPortada.classList.remove('hidden-screen');
-            if (backgroundLiquido) backgroundLiquido.classList.remove('hidden-screen');
-            
-            // Resetear estado del juego
-            faseEfectosActiva = false;
-            prismasFase4.forEach(p => {
-                if (scene) scene.remove(p);
+            ejecutarTransicionFinal(() => {
+                // Ocultar pantalla de victoria
+                if (pantallaVictoria) {
+                    pantallaVictoria.classList.remove('reveal-screen');
+                    pantallaVictoria.classList.add('hidden-screen');
+                }
+                
+                // Ocultar sección de prisma y volver a portada
+                if (prismaSection) {
+                    prismaSection.classList.add('hidden-screen');
+                    prismaSection.style.backgroundColor = '';
+                }
+                if (pantallaPortada) pantallaPortada.classList.remove('hidden-screen');
+                if (backgroundLiquido) backgroundLiquido.classList.remove('hidden-screen');
+                
+                // Resetear estado del juego
+                faseEfectosActiva = false;
+                clearTimeout(timerBotonFinalizar);
+                prismasFase4.forEach(p => {
+                    if (scene) scene.remove(p);
+                });
+                prismasFase4.length = 0;
+                prismaActivo = null;
+
+                hacesDeLuzFase4.forEach(h => {
+                    if (scene) scene.remove(h);
+                });
+                hacesDeLuzFase4.length = 0;
+
+                limpiarParticulasInteractivas();
+
+                rejillaInteractiva.forEach(cell => {
+                    if (scene) scene.remove(cell);
+                });
+                rejillaInteractiva.length = 0;
+
+                if (luzCentral) {
+                    if (scene) scene.remove(luzCentral);
+                    luzCentral = null;
+                }
+
+                if (btnFinalizarJuegoFlotante) {
+                    btnFinalizarJuegoFlotante.classList.remove('reveal-menu');
+                    btnFinalizarJuegoFlotante.classList.add('hidden-menu');
+                }
+                if (renderer && renderer.domElement) {
+                    renderer.domElement.style.filter = '';
+                }
+                
+                // Resetear portada
+                if (pantallaPortada) pantallaPortada.classList.remove('transitioning');
+                combinacionCompletada = false;
+                cuadradosPortada.forEach((c, idx) => {
+                    c.classList.remove('spin-scale-down');
+                    c.style.transition = '';
+                    c.style.left = '';
+                    c.style.top = '';
+                    c.style.transform = '';
+                    c.style.cursor = 'grab';
+                    c.style.pointerEvents = 'auto';
+                    c.dataset.arrastrando = "false";
+                });
+                if (textPista) textPista.classList.remove('fade-out');
+                if (btnComenzar) {
+                    btnComenzar.classList.remove('reveal-active');
+                    btnComenzar.classList.add('hidden-start');
+                }
             });
-            prismasFase4.length = 0;
-            prismaActivo = null;
-
-            hacesDeLuzFase4.forEach(h => {
-                if (scene) scene.remove(h);
-            });
-            hacesDeLuzFase4.length = 0;
-
-            limpiarParticulasInteractivas();
-
-            rejillaInteractiva.forEach(cell => {
-                if (scene) scene.remove(cell);
-            });
-            rejillaInteractiva.length = 0;
-
-            if (luzCentral) {
-                if (scene) scene.remove(luzCentral);
-                luzCentral = null;
-            }
-
-            if (btnFinalizarJuegoFlotante) {
-                btnFinalizarJuegoFlotante.classList.remove('reveal-menu');
-                btnFinalizarJuegoFlotante.classList.add('hidden-menu');
-            }
-            if (renderer && renderer.domElement) {
-                renderer.domElement.style.filter = '';
-            }
-            
-            // Resetear portada
-            if (pantallaPortada) pantallaPortada.classList.remove('transitioning');
-            combinacionCompletada = false;
-            cuadradosPortada.forEach((c, idx) => {
-                c.classList.remove('spin-scale-down');
-                c.style.transition = '';
-                c.style.left = '';
-                c.style.top = '';
-                c.style.transform = '';
-                c.style.cursor = 'grab';
-                c.style.pointerEvents = 'auto';
-                c.dataset.arrastrando = "false";
-            });
-            if (textPista) textPista.classList.remove('fade-out');
-            if (btnComenzar) {
-                btnComenzar.classList.remove('reveal-active');
-                btnComenzar.classList.add('hidden-start');
-            }
         });
+    }
+
+    function ejecutarTransicionFinal(callback) {
+        const overlay = document.getElementById('transitionOverlay');
+        if (overlay) {
+            overlay.classList.add('active');
+            setTimeout(() => {
+                callback();
+                setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 400);
+            }, 1400); // 1.4 segundos de animación de mezcla
+        } else {
+            callback();
+        }
     }
 });
