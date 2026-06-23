@@ -3,39 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cuadriculando</title>
-    
+    <title>CUADRICULANDO</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-
-    <link rel="stylesheet" href="style.css?v=13">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <nav class="navbar">
-        <a href="#inicio" class="btn-navegacion">Inicio</a>
-        <a href="newpage.html" class="btn-navegacion btn-jugar-destacado">Página Experimental ➔</a>
+    <div id="scroll-progress"></div>
+
+    <nav class="navbar fade-in">
+        <div class="logo">CUADRICULANDO</div>
+        <div class="nav-links">
+            <a href="#que-es" class="nav-link">El Juego</a>
+            <a href="#como-se-juega" class="nav-link">Mecánicas</a>
+            <a href="#fundamento" class="nav-link">Fundamento</a>
+            <a href="newpage.html" class="nav-link">Experimental</a>
+        </div>
     </nav>
 
-    <!-- Nubes y Paisajes Acrílicos Nebulosos en el fondo (Estilo Bilexer) -->
-    <div class="misty-container">
-        <div class="misty-shape misty-verde"></div>
-        <div class="misty-shape misty-azul"></div>
-        <div class="misty-shape misty-rojo"></div>
-        <div class="misty-shape misty-amarillo"></div>
-        <div class="misty-shape misty-bloom"></div>
-    </div>
+    <header class="hero">
+        <div id="grid-interaction-container"></div>
+        
+        <div class="hero-content fade-in">
+            <h1 class="main-title">CUADRICULANDO</h1>
+        </div>
+    </header>
 
-    <div class="bg-grid" id="gridContainer"></div>
+    <main class="main-content">
+        
+        <section class="section bg-white text-black" id="que-es">
+            <div class="container grid-layout">
+                <div class="title-column fade-in">
+                    <span class="section-label">[ 01 / CONCEPT ]</span>
+                    <h2 class="section-title">¿Qué es el juego?</h2>
+                </div>
+                <div class="content-column fade-in">
+                    <p class="lead-paragraph">Un sistema de mesa estratégico fundamentado en mecánicas de construcción modular, dinámicas de eliminación y la gestión del caos controlado.</p>
+                    <p>Nace bajo la premisa de observar cómo los flujos de tensión alteran un espacio compartido. Cada jugador ejerce el rol de un estratega que debe balancear la edificación de sus propias estructuras mientras despliega tácticas de sabotaje directo sobre las zonas del oponente, creando un tablero vivo en constante mutación.</p>
+                    
+                    <div class="feature-card-dark">
+                        <span class="card-tag">[ IDENTIDAD VISUAL ]</span>
+                        <h3>Contraste Absoluto</h3>
+                        <p>Diseñado bajo una estética rígida de blanco y negro. La ausencia de color resalta la pureza de la grilla, los componentes geométricos y la gravedad de cada decisión tomada en el turno.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section class="hero-section" id="inicio">
-        <h1 class="main-title">Cuadriculando</h1>
-    </section>
+        <section class="section bg-black text-white rounded-section" id="como-se-juega">
+            <div class="container">
+                <div class="center-header fade-in">
+                    <span class="section-label">[ 02 / CORE MECHANICS ]</span>
+                    <h2 class="section-title-center">El ritmo del tablero</h2>
+                    <p class="subtitle-center">Tres etapas sincronizadas que definen la coreografía de cada partida.</p>
+                </div>
 
-    <script src="script.js?v=13"></script>
+                <div class="cards-stream">
+                    <div class="stream-card fade-in">
+                        <div class="card-meta">
+                            <span class="card-number">01</span>
+                            <h4>Fase de Despliegue</h4>
+                        </div>
+                        <p>Los jugadores inician con una mano táctica cerrada y un tablero modular virgen. Cada movimiento inicial emula una coreografía donde observar la disposición física del rival determina la supervivencia.</p>
+                    </div>
+
+                    <div class="stream-card fade-in">
+                        <div class="card-meta">
+                            <span class="card-number">02</span>
+                            <h4>Construcción y Sabotaje</h4>
+                        </div>
+                        <p>El núcleo interactivo. Puedes decidir si asentar tus estructuras para puntuar o ejecutar cartas de <strong>eliminación y sabotaje</strong> orientadas a fragmentar y destruir los cimientos estratégicos del adversario.</p>
+                    </div>
+
+                    <div class="stream-card fade-in">
+                        <div class="card-meta">
+                            <span class="card-number">03</span>
+                            <h4>Resolución y Tensión</h4>
+                        </div>
+                        <p>Los recursos se agotan y las consecuencias en el espacio de juego son irreversibles. No hay margen para el error: cada carta jugada altera permanentemente el equilibrio de la grilla general.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-white text-black" id="como-ganar">
+            <div class="container grid-layout">
+                <div class="title-column fade-in">
+                    <span class="section-label">[ 03 / RULES ]</span>
+                    <h2 class="section-title">La ruta a la victoria</h2>
+                </div>
+                <div class="content-column fade-in">
+                    <p class="lead-paragraph">Ganar no se reduce a acumular puntos; implica entender con precisión matemática cuándo destruir el avance ajeno.</p>
+                    <p>La partida concluye de inmediato cuando una estructura principal es completada o el mazo de eventos colapsa el tablero. La victoria se calcula en base a tres ejes:</p>
+                    
+                    <ul class="asymmetric-list">
+                        <li>
+                            <span class="list-index">A</span>
+                            <div>
+                                <span class="card-tag">[ ESTRATEGIA PASIVA ]</span>
+                                <strong>Zonas Activas</strong>
+                                <p>El valor neto de tus estructuras que lograron mantenerse en pie tras las oleadas de ataques enemigos.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="list-index">B</span>
+                            <div>
+                                <span class="card-tag">[ ESTRATEGIA ACTIVA ]</span>
+                                <strong>Efectividad del Sabotaje</strong>
+                                <p>Puntos adicionales acumulados por cada hito u objetivo enemigo neutralizado de forma exitosa.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="list-index">C</span>
+                            <div>
+                                <span class="card-tag">[ CONTROL ]</span>
+                                <strong>Sincronía de Recursos</strong>
+                                <p>Bonificaciones o penalizaciones finales según la gestión estratégica del remanente de cartas en tu mano.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-black text-white rounded-section" id="fundamento">
+            <div class="container split-evolution">
+                <div class="evolution-info fade-in">
+                    <span class="section-label">[ 04 / FOUNDATION ]</span>
+                    <h2 class="section-title">Fundamento</h2>
+                    <p>El juego inició su vida en el plano tangible: prototipos rápidos en papel, fichas cortadas a mano, experimentación con texturas físicas y dinámicas de interacción directa cara a cara en la mesa de diseño.</p>
+                    <p>La evolución hacia el ecosistema digital mediante una aplicación interactiva (PWA) no busca reemplazar el cartón y el papel, sino expandir radicalmente sus capacidades. El código convierte las reglas análogas en algoritmos limpios que permiten flujos automatizados, interfaces fluidas y una experiencia inmersiva que preserva intacta la estética minimalista original.</p>
+                </div>
+                
+                <div class="evolution-container-visual fade-in">
+                    <div class="glass-wireframe">
+                        <div class="glass-header">
+                            <span class="window-dot"></span>
+                            <span class="window-dot"></span>
+                            <span class="window-dot"></span>
+                        </div>
+                        <div class="glass-content">
+                            <p class="terminal-text">// GRID_SYSTEM_PWA</p>
+                            <div class="abstract-shape"></div>
+                            <p class="terminal-sub text-center">[ SYSTEM_PROTOTYPE_V2 ]</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2026 — CUADRICULANDO. Diseñado bajo un enfoque de interacción y estructura pura.</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
