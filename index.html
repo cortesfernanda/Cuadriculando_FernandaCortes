@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CUADRICULANDO</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2.5">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="page-fade-in">
 
     <div id="scroll-progress"></div>
 
@@ -18,8 +18,9 @@
         <div class="nav-links">
             <a href="#que-es" class="nav-link">El Juego</a>
             <a href="#como-se-juega" class="nav-link">Mecánicas</a>
+            <a href="#pix" class="nav-link">Pix</a>
             <a href="#fundamento" class="nav-link">Fundamento</a>
-            <a href="newpage.html" class="nav-link">Experimental</a>
+            <a href="newpage.html" class="nav-link">Interfaz expresiva</a>
         </div>
     </nav>
 
@@ -36,18 +37,11 @@
         <section class="section bg-white text-black" id="que-es">
             <div class="container grid-layout">
                 <div class="title-column fade-in">
-                    <span class="section-label">[ 01 / CONCEPT ]</span>
                     <h2 class="section-title">¿Qué es el juego?</h2>
+                    <p class="lead-paragraph">Cuadriculando es un juego de estrategia y sabotaje para 2 a 4 jugadores. El objetivo es completar la cuadrícula oculta bajo el tablero antes que los demás, utilizando puntos y cartas especiales para avanzar mientras bloqueas el progreso de tus oponentes. Cada partida pone a prueba la concentración, la planificación y la toma de decisiones estratégicas.</p>
                 </div>
                 <div class="content-column fade-in">
-                    <p class="lead-paragraph">Un sistema de mesa estratégico fundamentado en mecánicas de construcción modular, dinámicas de eliminación y la gestión del caos controlado.</p>
-                    <p>Nace bajo la premisa de observar cómo los flujos de tensión alteran un espacio compartido. Cada jugador ejerce el rol de un estratega que debe balancear la edificación de sus propias estructuras mientras despliega tácticas de sabotaje directo sobre las zonas del oponente, creando un tablero vivo en constante mutación.</p>
-                    
-                    <div class="feature-card-dark">
-                        <span class="card-tag">[ IDENTIDAD VISUAL ]</span>
-                        <h3>Contraste Absoluto</h3>
-                        <p>Diseñado bajo una estética rígida de blanco y negro. La ausencia de color resalta la pureza de la grilla, los componentes geométricos y la gravedad de cada decisión tomada en el turno.</p>
-                    </div>
+                    <div id="canvas-caja-3d" class="render-caja-wrapper"></div>
                 </div>
             </div>
         </section>
@@ -55,34 +49,67 @@
         <section class="section bg-black text-white rounded-section" id="como-se-juega">
             <div class="container">
                 <div class="center-header fade-in">
-                    <span class="section-label">[ 02 / CORE MECHANICS ]</span>
-                    <h2 class="section-title-center">El ritmo del tablero</h2>
-                    <p class="subtitle-center">Tres etapas sincronizadas que definen la coreografía de cada partida.</p>
+                    <h2 class="section-title-center">¿Cómo se juega?</h2>
+                    <p class="subtitle-center">Cinco pasos que definen el transcurso de cada partida.</p>
                 </div>
 
                 <div class="cards-stream">
-                    <div class="stream-card fade-in">
+                    <div class="stream-card fade-in" id="card-roulette">
                         <div class="card-meta">
                             <span class="card-number">01</span>
-                            <h4>Fase de Despliegue</h4>
+                            <h4>Gira la ruleta</h4>
                         </div>
-                        <p>Los jugadores inician con una mano táctica cerrada y un tablero modular virgen. Cada movimiento inicial emula una coreografía donde observar la disposición física del rival determina la supervivencia.</p>
+                        <p>En tu turno, haz girar la ruleta para determinar cuántos espacios podrás desplazarte en el tablero.</p>
+                        <div class="card-interactive">
+                            <div class="roulette-wrapper">
+                                <div class="roulette-pointer"></div>
+                                <canvas id="roulette-canvas" width="110" height="110"></canvas>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="stream-card fade-in">
+                    <div class="stream-card fade-in" id="card-cards">
                         <div class="card-meta">
                             <span class="card-number">02</span>
-                            <h4>Construcción y Sabotaje</h4>
+                            <h4>Reúne cartas de puntaje</h4>
                         </div>
-                        <p>El núcleo interactivo. Puedes decidir si asentar tus estructuras para puntuar o ejecutar cartas de <strong>eliminación y sabotaje</strong> orientadas a fragmentar y destruir los cimientos estratégicos del adversario.</p>
+                        <p>Cada jugador comienza la partida con 5 cartas de puntaje. Durante el juego podrás obtener más cartas al avanzar por ciertas casillas o seguir las indicaciones del tablero.</p>
+                        <div class="card-interactive">
+                            <canvas id="cards-canvas" width="120" height="120"></canvas>
+                        </div>
                     </div>
 
-                    <div class="stream-card fade-in">
+                    <div class="stream-card fade-in" id="card-pawn">
                         <div class="card-meta">
                             <span class="card-number">03</span>
-                            <h4>Resolución y Tensión</h4>
+                            <h4>Desplaza tu peón</h4>
                         </div>
-                        <p>Los recursos se agotan y las consecuencias en el espacio de juego son irreversibles. No hay margen para el error: cada carta jugada altera permanentemente el equilibrio de la grilla general.</p>
+                        <p>Mueve tu peón según el número obtenido en la ruleta y planifica cuidadosamente tu recorrido.</p>
+                        <div class="card-interactive">
+                            <canvas id="pawn-canvas" width="120" height="120"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="stream-card fade-in" id="card-block">
+                        <div class="card-meta">
+                            <span class="card-number">04</span>
+                            <h4>Explora y bloquea</h4>
+                        </div>
+                        <p>Puedes moverte dentro de tu propia zona o ingresar a la de otros jugadores para obstaculizar su progreso y disputar espacios del tablero.</p>
+                        <div class="card-interactive">
+                            <canvas id="block-canvas" width="120" height="120"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="stream-card fade-in" id="card-grid-win">
+                        <div class="card-meta">
+                            <span class="card-number">05</span>
+                            <h4>Completa tu cuadrícula</h4>
+                        </div>
+                        <p>Utiliza las cartas de puntaje acumuladas para adquirir casillas de tu color y completar tu cuadrícula personal. El primer jugador que logre llenarla por completo será el ganador.</p>
+                        <div class="card-interactive">
+                            <canvas id="grid-win-canvas" width="120" height="120"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,74 +118,92 @@
         <section class="section bg-white text-black" id="como-ganar">
             <div class="container grid-layout">
                 <div class="title-column fade-in">
-                    <span class="section-label">[ 03 / RULES ]</span>
-                    <h2 class="section-title">La ruta a la victoria</h2>
+                    <h2 class="section-title">ELEMENTOS DEL JUEGO</h2>
+                    <p class="lead-paragraph">Descubre las piezas que conforman Cuadriculando. Para la construcción del juego se utilizaron diversos materiales, principalmente MDF, seleccionado por su resistencia y facilidad de fabricación. Además, algunas piezas incorporan acrílico, lo que aporta un mejor acabado y refuerza la identidad visual del juego.</p>
                 </div>
                 <div class="content-column fade-in">
-                    <p class="lead-paragraph">Ganar no se reduce a acumular puntos; implica entender con precisión matemática cuándo destruir el avance ajeno.</p>
-                    <p>La partida concluye de inmediato cuando una estructura principal es completada o el mazo de eventos colapsa el tablero. La victoria se calcula en base a tres ejes:</p>
-                    
-                    <ul class="asymmetric-list">
-                        <li>
-                            <span class="list-index">A</span>
-                            <div>
-                                <span class="card-tag">[ ESTRATEGIA PASIVA ]</span>
-                                <strong>Zonas Activas</strong>
-                                <p>El valor neto de tus estructuras que lograron mantenerse en pie tras las oleadas de ataques enemigos.</p>
+                    <div class="carousel-container">
+                        <button class="carousel-btn btn-prev" aria-label="Foto anterior">&lsaquo;</button>
+                        <div class="carousel-track-wrapper">
+                            <div class="carousel-track">
+                                <div class="carousel-slide active"><img src="assets/FOTOJUEGO1.png" alt="Foto del juego 1"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO2.png" alt="Foto del juego 2"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO3.png" alt="Foto del juego 3"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO4.png" alt="Foto del juego 4"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO5.png" alt="Foto del juego 5"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO6.png" alt="Foto del juego 6"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO7.png" alt="Foto del juego 7"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO8.png" alt="Foto del juego 8"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO9.png" alt="Foto del juego 9"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO10.png" alt="Foto del juego 10"></div>
+                                <div class="carousel-slide"><img src="assets/FOTOJUEGO11.png" alt="Foto del juego 11"></div>
                             </div>
-                        </li>
-                        <li>
-                            <span class="list-index">B</span>
-                            <div>
-                                <span class="card-tag">[ ESTRATEGIA ACTIVA ]</span>
-                                <strong>Efectividad del Sabotaje</strong>
-                                <p>Puntos adicionales acumulados por cada hito u objetivo enemigo neutralizado de forma exitosa.</p>
-                            </div>
-                        </li>
-                        <li>
-                            <span class="list-index">C</span>
-                            <div>
-                                <span class="card-tag">[ CONTROL ]</span>
-                                <strong>Sincronía de Recursos</strong>
-                                <p>Bonificaciones o penalizaciones finales según la gestión estratégica del remanente de cartas en tu mano.</p>
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                        <button class="carousel-btn btn-next" aria-label="Siguiente foto">&rsaquo;</button>
+                        <div class="carousel-dots"></div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="section bg-black text-white rounded-section" id="fundamento">
+        <section class="section bg-black text-white rounded-section" id="pix">
+            <div class="container pix-centered-layout">
+                <div class="fade-in">
+                    <h2 class="section-title">Pix</h2>
+                    <div class="pix-iframe-wrapper">
+                        <iframe src="https://eadpucv.github.io/pix/#!/import/ewogICJ0aXRsZSI6ICJQYXJ0aXR1cmEgUGl4IDogQ3VhZHJpY3VsYW5kbyAiLAogICJsYXlvdXQiOiAicGl4IiwKICAiZGVzY3JpcHRpb24iOiAiUGFydGl0dXJhIGRlIGxhIGV4cGVyaWVuY2lhIGVuIGxhIGludGVyZmF6IGV4cHJlc2l2YSBkZWwganVlZ28gQ3VhZHJpY3VsYW5kbyAiLAogICJzY29yZXMiOiBbCiAgICBbCiAgICAgIHsKICAgICAgICAic3RlcF90aXRsZSI6ICJJTklDSU8iLAogICAgICAgICJ1c2VyIjogInBpeC1pbnRyaWd1ZWQgwr9RdcOpIGhhY2VuIGVzdG9zIGN1YWRyYWRvcyBkZSBjb2xvcmVzPyIsCiAgICAgICAgImRpYWxvZ3VlIjogInBpeC1jbGljayBMZWUgbGEgZGVzY3JpcGNpw7NuIHkganVudGEgbG9zIGN1YWRyYWRvcyBkZSBjb2xvcmVzIiwKICAgICAgICAic3lzdGVtIjogInBpeC1zdGFjayBGbG90YW4gY3VhdHJvIGN1YWRyYWRvcyBkZSBhY3LDrWxpY28gdHJhbnNsw7pjaWRvIGVuIDJEIiwKICAgICAgICAibm90ZSI6ICJQdWVkZXMgYXJyYXN0cmFyIGxvcyBjdWFkcmFkb3MgbGlicmVtZW50ZSBjb24gZWwgbW91c2UiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAic3RlcF90aXRsZSI6ICIiLAogICAgICAgICJ1c2VyIjogInBpeC1zdXJwcmlzZWQgXCJXb3dcIiBNZSBndXN0YSBxdWUgc2UgcHVlZGFuIG1lemNsYXIgbG9zIGNvbG9yZXMiLAogICAgICAgICJkaWFsb2d1ZSI6ICJwaXgtY2xpY2sgQXByZXRhIGVsIGJvdMOzbiBwYXJhIHBhc2FyIGEgbGEgc2lndWllbnRlIHBhcnRlIiwKICAgICAgICAic3lzdGVtIjogInBpeC1yaWdodCBDdWFuZG8gbG9ncmFzIGp1bnRhciBsb3MgY3VhdHJvIGN1YWRyYWRvcywgc2UgYWN0aXZhIHVuIFNuYXAgbWFnbsOpdGljbyBxdWUgbG9zIGFsaW5lYSB5IHJldmVsYSBlbCBib3TDs24gXCJDb21lbnphclwiLiIsCiAgICAgICAgIm5vdGUiOiAiTG9zIGN1YWRyYWRvcyBnaXJhbiByw6FwaWRhbWVudGUgeSBzZSBlbmNvZ2VuIGhhc3RhIGRlc2FwYXJlY2VyIChzcGluLXNjYWxlLWRvd24pIgogICAgICB9LAogICAgICB7CiAgICAgICAgInN0ZXBfdGl0bGUiOiAiU0VHVU5EQSBQQVJURSIsCiAgICAgICAgInVzZXIiOiAicGl4LWludHJpZ3VlZCDCv1F1w6kgaGFyw6FuIGVzdG9zIGN1YWRyYWRvcz8iLAogICAgICAgICJkaWFsb2d1ZSI6ICJwaXgtdmlldyBObyBoYXkgdW5hIGFjY2nDs24gZGlyZWN0YSwgbG9zIGVsZW1lbnRvcyBhcGFyZWNlbiBzb2xvcyIsCiAgICAgICAgInN5c3RlbSI6ICJwaXgtc3RhY2sgVW4gZXNwYWNpbyB0cmlkaW1lbnNpb25hbCBpbnRlcmFjdGl2by4gRWwgdXN1YXJpbyBwdWVkZSByb3RhciBsYSBjw6FtYXJhIHBhcmEgdmVyIGxhcyA0IHBpZXphcyBkZXNkZSBjdWFscXVpZXIgcGVyc3BlY3RpdmEiLAogICAgICAgICJub3RlIjogIkxhcyBwaWV6YXMgY2FtYmlhbiBkZSBwcm9waWVkYWQgbWF0ZXJpYWwgeSBjb21wb3J0YW1pZW50byBmw61zaWNvIGNvbiBjYWRhIGNsaWMgZW4gbGEgcGFudGFsbGEiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAic3RlcF90aXRsZSI6ICIiLAogICAgICAgICJ1c2VyIjogInBpeC1pbnRyaWd1ZWQgwr9Dw7NtbyBlcyBwb3NpYmxlIHF1ZSBzZSBwdWVkYW4gbW92ZXI/wr9RdcOpIHBhc2Egc2kgdG9jbyB1biBjdWFkcmFkbz8iLAogICAgICAgICJkaWFsb2d1ZSI6ICJwaXgtY2xpY2sgTGVlIGxhIGRlc2NyaXBjacOzbiB5IGhhY2UgY2xpYyIsCiAgICAgICAgInN5c3RlbSI6ICJwaXgtZW1wdHkgTGFzIDQgcGxhY2FzIGdyYW5kZXMgYmFyYWphbiBzdXMgY29sb3JlcyAsIHNlIGRpc3BlcnNhbiBoYWNpYSBsYXMgZXNxdWluYXMgeSBjb21pZW56YW4gYSByZWJvdGFyIGNvbnRpbnVhbWVudGUgY29udHJhIGxvcyBib3JkZXMgZGUgbGEgcGFudGFsbGEiLAogICAgICAgICJub3RlIjogIkEgbG8gbGFyZ28gZGUgbGEgZXhwZXJpZW5jaWEsIGxvcyBjb2xvcmVzIGF0cmF2aWVzYW4gZGlzdGludGFzIHRyYW5zZm9ybWFjaW9uZXMgdmlzdWFsZXMuIEluaWNpYWxtZW50ZSBzZSBtZXpjbGFuIHkgcmVvcmdhbml6YW4gZW50cmUgbGFzIHBpZXphcywgbHVlZ28gYXVtZW50YW4gc3UgaW50ZW5zaWRhZCBtZWRpYW50ZSBlZmVjdG9zIGx1bWlub3Nvcy4iCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAic3RlcF90aXRsZSI6ICIiLAogICAgICAgICJ1c2VyIjogInBpeC1zdXJwcmlzZWQgwqFMbyBjb2xvcmVzIHkgZWwgbW92aW1pZW50byBjYW1iaWFuIGNhZGEgcXVlIGxvcyB0b2NvISIsCiAgICAgICAgImRpYWxvZ3VlIjogInBpeC1kb3VibGVjbGljayBIYWNlIG3DoXMgY2xpY2tzIHBhcmEgdmVyIGxhcyBkaXN0aW50YXMgaW50ZXJhY2Npb25lcyIsCiAgICAgICAgInN5c3RlbSI6ICJwaXgtZXhwYW5kIExhcyA0IHBsYWNhcyBzZSBkZXNpbnRlZ3JhbiAgY3Vib3MgaW5kZXBlbmRpZW50ZXMgKEJveEdlb21ldHJ5KS4gQ2FkYSBjdWJpdG8gc2UgZXNwYXJjZSwgcm90YSBlbiAzRCBzb2JyZSBzdXMgcHJvcGlvcyBlamVzIHkgcmVib3RhIiwKICAgICAgICAibm90ZSI6ICIiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAic3RlcF90aXRsZSI6ICIiLAogICAgICAgICJ1c2VyIjogInBpeC1zdXJwcmlzZWQgTWUgbGxhbWEgbGEgYXRlbmNpw7NuIGNvbW8gdGllbmUgc29uaWRvIHkgY29tbyBzZSB2YSByb21waWVuZG8gbGFzIHBpZXphcyIsCiAgICAgICAgImRpYWxvZ3VlIjogInBpeC1jbGljayBIYWNlIGVsIMO6bHRpbW8gY2xpY2siLAogICAgICAgICJzeXN0ZW0iOiAicGl4LXRhcDVyaWdodCBMb3MgIGZyYWdtZW50b3Mgc2UgYWdyYW5kYW4geSBlc3RhbGxhbiwgY2F5ZW5kbyBwb3IgZ3JhdmVkYWQgeSBkZXN2YW5lY2nDqW5kb3NlIGVuIGVsIGFpcmUgcGFyYSBkYXIgcGFzbyBhIGxhIHNpZ3VpZW50ZSBmYXNlLiIsCiAgICAgICAgIm5vdGUiOiAiRmluYWxtZW50ZSwgbG9zIGNvbG9yZXMgc2UgZXhwYW5kZW4geSBkaXNwZXJzYW4ganVudG8gYSBsb3MgZnJhZ21lbnRvcyBlbiB1bmEgZXhwbG9zacOzbiBxdWUgbWFyY2EgZWwgY2llcnJlIGRlIGxhIGludGVyYWNjacOzbi4iCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAic3RlcF90aXRsZSI6ICJURVJDRVJBIFBBUlRFIiwKICAgICAgICAidXNlciI6ICJwaXgtaW50cmlndWVkIMK/RGUgbnVldm8gYXBhcmVjaWVyb24gb3Ryb3MgY3VhZHJhZG9zPyDCv3F1ZSBzZSBwb2Ryw6EgaGFjZXIgYWhvcmE/IiwKICAgICAgICAiZGlhbG9ndWUiOiAicGl4LXZpZXcgU2luIGFjY2nDs24gZGlyZWN0YSwgbG9zIGN1YWRyYWRvcyBhcGFyZWNlbiBzb2xvIHBvciBsYSBwYW50YWxsYSIsCiAgICAgICAgInN5c3RlbSI6ICJwaXgtZXhwYW5kIEFwYXJlY2VuIGN1Ym9zIDNEIHBvciBsYSBwYW50YWxsYS4iLAogICAgICAgICJub3RlIjogIiIKICAgICAgfSwKICAgICAgewogICAgICAgICJzdGVwX3RpdGxlIjogIiIsCiAgICAgICAgInVzZXIiOiAicGl4LXN1cnByaXNlZCBNZSBlbmNhbnRhIGNvbW8gbG9zIGN1YWRyYWRvcyBzZSBhbGVqYW4gY3VhbmRvIHBhc28gZWwgbW91c2UiLAogICAgICAgICAiZGlhbG9ndWUiOiAicGl4LW1vdmUgTXVldmUgZWwgbW91c2UgeSBsb3MgY3VhZHJhZG9zIHNlIG11ZXZlbiIsCiAgICAgICAgInN5c3RlbSI6ICJwaXgtem9vbSBIYXkgZWZlY3RvIGRlIHJlcHVsc2nDs24iLAogICAgICAgICJub3RlIjogIiIKICAgICAgfSwKICAgICAgewogICAgICAgICJzdGVwX3RpdGxlIjogIiIsCiAgICAgICAgInVzZXIiOiAicGl4LWludHJpZ3VlZCBBaCwgZXMgYWxnbyBjb21wbGljYWRvIHBvZGVyIGhhY2VyIGNsaWMganVzdG8gZW4gbG9zIGN1YWRyYWRvcyIsCiAgICAgICAgImRpYWxvZ3VlIjogInBpeC1jbGljayBIYWNlIG3DoXMgY2xpY2tzIGx1ZWdvIGRlIGxlZXIgbGEgaW5zdHJ1Y2Npw7NuIiwKICAgICAgICAic3lzdGVtIjogInBpeC1leHBhbmQgSGF5IG9uZGFzIGRlIGltcGFjdG8gYWwgaGFjZXIgY2xpYyIsCiAgICAgICAgIm5vdGUiOiAiVHJhcyBoYWNlciBjbGljIGVuIDUgY3ViaXRvcywgc2UgYWN0aXZhIGxhIHRyYW5zaWNpw7NuOiBsYSBtYXlvcsOtYSBkZSBsb3MgY3ViaXRvcyBjYWUgcG9yIGdyYXZlZGFkIHkgc2UgZGVzdmFuZWNlLCBtaWVudHJhcyA0IGN1Ym9zIHZpYWphbiBoYWNpYSBsYXMgZXNxdWluYXMiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAic3RlcF90aXRsZSI6ICJDSUVSUkUiLAogICAgICAgICJ1c2VyIjogInBpeC1zdXJwcmlzZWQgwqFMbyBwdWRlIGxvZ3JhciEgV293LCBoYXkgdW5hIG51ZXZhIHRyYW5zaWNpw7NuIiwKICAgICAgICAiZGlhbG9ndWUiOiAicGl4LXZpZXcgU2luIGFjY2nDs24gZGlyZWN0YSwgdmUgbGEgdHJhbnNpY2nDs24gYSBsYSBzaWd1aWVudGUgZXRhcGEiLAogICAgICAgICJzeXN0ZW0iOiAicGl4LWVtcHR5IFVuIHNhbmRib3ggw7NwdGljbyAzRCBjb21wdWVzdG8gcG9yIHVuIGZvY28gZGUgbHV6IGJsYW5jYSBjZW50cmFsICB5IDQgY3Vib3MgZW4gbGFzIGVzcXVpbmFzLCBjb24gdW5hIGN1YWRyw61jdWxhIGNlbGRhcyBlbiBlbCBmb25kby4iLAogICAgICAgICJub3RlIjogIiIKICAgICAgfSwKICAgICAgewogICAgICAgICJzdGVwX3RpdGxlIjogIiIsCiAgICAgICAgInVzZXIiOiAicGl4LWludHJpZ3VlZCDCv1F1w6kgaGFyw6FuIGVzdG9zIGN1YWRyYWRvcz8iLAogICAgICAgICJkaWFsb2d1ZSI6ICJwaXgtY2xpY2sgSGFjZSBjbGljIGVuIGxvcyBjdWFkcmFkb3MgcGFyYSB2ZXIgcXVlIHBhc2EiLAogICAgICAgICJzeXN0ZW0iOiAicGl4LWRyYWcgUHVlZGVzIGFycmFzdHJhciBlbiB0aWVtcG8gcmVhbCB0YW50byBsYSBib21iaWxsYSBkZSBsdXogY2VudHJhbCBjb21vIGN1YWxxdWllcmEgZGUgbG9zIDQgY3Vib3MgZGUgY29sb3Jlcy4iLAogICAgICAgICJub3RlIjogIkxvcyBjdWJvcyBpbnRlcmNlcHRhbiBsYSBsdXogYmxhbmNhIHkgcHJveWVjdGFuIHVuIGhheiBkZSBzdSByZXNwZWN0aXZvIGNvbG9yIGVuIGRpcmVjY2nDs24gb3B1ZXN0YS4gTGEgbG9uZ2l0dWQgeSBlbCBhbmNobyBkZSBlc3RlIGhheiBzZSBjYWxjdWxhbiBkaW7DoW1pY2FtZW50ZSBzZWfDum4gbGEgZGlzdGFuY2lhIGFsIGZvY28gZGUgbHV6LiIKICAgICAgfSwKICAgICAgewogICAgICAgICJzdGVwX3RpdGxlIjogIiIsCiAgICAgICAgInVzZXIiOiAicGl4LXN1cnByaXNlZCBObyBwdWVkbyBjcmVlciBsb3MgY3VhZHJhZG9zIGtlIHNvbmlkbyB5IHB1ZWRvIG1lemNsYXIgY29sb3JlcyIsCiAgICAgICAgImRpYWxvZ3VlIjogInBpeC1kcm9wIE11ZXZlIGVsIG1vdXNlIGFycmFzdHJhbmRvIGxvcyBjdWJvcyBwYXJhIG1lemNsYXIgY29sb3JlcyIsCiAgICAgICAgInN5c3RlbSI6ICJwaXgtZXhwYW5kIExhIHJlamlsbGEgZGUgZm9uZG8gYWN1bXVsYSBlbCBwYXNvIGRlIGxvcyBoYWNlcyB5IG1lemNsYSBsb3MgY29sb3JlcyBkZSBmb3JtYSBhZGl0aXZhIiwKICAgICAgICAibm90ZSI6ICJBbCBoYWNlciBjbGljIGVuIHVuIGN1Ym8gbyBlbiBlbCBmb2NvIGNlbnRyYWwsIGVzdGUgdmlicmEgZGUgZm9ybWEgZWzDoXN0aWNhIHkgZW1pdGUgcGFydMOtY3VsYXMgYnJpbGxhbnRlcyBkZSBzdSBjb2xvci4gQWwgaGFjZXIgY2xpYyBlbiBlbCBmb25kbyB2YWPDrW8sIHNlIHByb3BhZ2EgdW5hIG9uZGEgZXhwYW5zaXZhIGRlIGNvbG9yIGVuIGxhIHJlamlsbGEuIgogICAgICB9LAogICAgICB7CiAgICAgICAgInN0ZXBfdGl0bGUiOiAiIiwKICAgICAgICAidXNlciI6ICJwaXgtc21pbGluZyBRdWUgaW50ZXJlc2FudGUgdG9kbyBsbyBxdWUgcHVkZSBoYWNlciDCv3Z1ZWx2byBhIHByb2JhciBkZSBudWV2byB0b2RvIG8gdm95IGEgdmVyIG90cmEgcGFydGU/IiwiZGlhbG9ndWUiOiAicGl4LXRoaW5rIERlYmUgZGVjaWRpciBzb2JyZSBzaSBlbGVnaXIgdm9sdmVyIGEgbGEgaW5zdHJ1Y2Npw7NuIiwKICAgICAgICAic3lzdGVtIjogInBpeC1jbGljayBFbCBib3TDs24gZGUgdMOpcm1pbm8gZGlyaWdlIGFsIHVzdWFyaW8gYSB1bmEgcGFudGFsbGEgZmluYWwsIGRvbmRlIHNlIG11ZXN0cmFuIGRvcyBvcGNpb25lczogcmVncmVzYXIgYSBsYSBwYWdpbmEgZGUgaW5pY2lvIG8gdm9sdmVyIGEgaW5ncmVzYXIgYSBsYSBpbnRlcmZheiBleHByZXNpdmEuIiwibm90ZSI6IiJ9CiAgICBdCiAgXQp9" width="100%" height="928" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section bg-white text-black" id="fundamento">
             <div class="container split-evolution">
                 <div class="evolution-info fade-in">
-                    <span class="section-label">[ 04 / FOUNDATION ]</span>
                     <h2 class="section-title">Fundamento</h2>
-                    <p>El juego inició su vida en el plano tangible: prototipos rápidos en papel, fichas cortadas a mano, experimentación con texturas físicas y dinámicas de interacción directa cara a cara en la mesa de diseño.</p>
-                    <p>La evolución hacia el ecosistema digital mediante una aplicación interactiva (PWA) no busca reemplazar el cartón y el papel, sino expandir radicalmente sus capacidades. El código convierte las reglas análogas en algoritmos limpios que permiten flujos automatizados, interfaces fluidas y una experiencia inmersiva que preserva intacta la estética minimalista original.</p>
+                    <p>Para la propuesta de diseño de interfaz se analizaron e investigaron las principales características del juego desarrollado anteriormente, Cuadriculando. A partir de este análisis se identificaron diversas cualidades materiales y visuales que fueron trasladadas al diseño de la página web. Entre ellas destacan el uso del <strong>acrílico</strong>, la construcción mediante <strong>capas</strong>, las <strong>transparencias</strong> y la presencia de colores representativos que se superponen para generar distintas percepciones visuales.</p>
+                    <p>Una de las propiedades más relevantes observadas en el material es la relación entre las capas y la percepción de <strong>profundidad</strong>. La distancia entre estas influye significativamente en la forma en que se perciben las figuras y los colores. Cuando las capas se encuentran próximas entre sí, las formas se observan con mayor nitidez, mientras que los colores aparecen más intensos y concentrados. Por el contrario, al aumentar la separación entre las capas, las figuras comienzan a <strong>difuminarse</strong>, transformándose en formas más abstractas, donde el color se expande visualmente y genera una sensación de mayor profundidad.</p>
+                    <p>Estas observaciones fueron fundamentales para el diseño de la interfaz, ya que permitieron incorporar recursos visuales inspirados en las cualidades ópticas del acrílico, utilizando superposiciones, transparencias y variaciones en la percepción de las formas para recrear digitalmente la experiencia material presente en Cuadriculando.</p>
                 </div>
                 
                 <div class="evolution-container-visual fade-in">
-                    <div class="glass-wireframe">
-                        <div class="glass-header">
-                            <span class="window-dot"></span>
-                            <span class="window-dot"></span>
-                            <span class="window-dot"></span>
-                        </div>
-                        <div class="glass-content">
-                            <p class="terminal-text">// GRID_SYSTEM_PWA</p>
-                            <div class="abstract-shape"></div>
-                            <p class="terminal-sub text-center">[ SYSTEM_PROTOTYPE_V2 ]</p>
-                        </div>
-                    </div>
+                    <div id="canvas-acrilicos-3d" class="render-acrilicos-wrapper"></div>
                 </div>
+            </div>
+            
+            <div class="fundamento-action fade-in">
+                <a href="newpage.html" class="btn-experimental">Ver Interfaz expresiva</a>
             </div>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>&copy; 2026 — CUADRICULANDO. Diseñado bajo un enfoque de interacción y estructura pura.</p>
+        <div class="footer-container">
+            <p class="footer-meta">Esta interfaz digital fue diseñada en Visual Studio Code y presentada en GitHub.</p>
+            <div class="footer-bottom-row">
+                <div class="footer-details">
+                    <div class="footer-item">
+                        <span class="footer-label">Estudiante</span>
+                        <a href="https://wiki.ead.pucv.cl/Fernanda_Cort%C3%A9s" target="_blank" rel="noopener">Fernanda Cortés Villarroel</a>
+                    </div>
+                    <div class="footer-item">
+                        <span class="footer-label">Profesoras</span>
+                        <span class="footer-val">Javiera Ruiz, Katherine Exss</span>
+                    </div>
+                    <div class="footer-item">
+                        <span class="footer-label">Taller</span>
+                        <a href="https://wiki.ead.pucv.cl/Taller_de_Dise%C3%B1o_de_Interacci%C3%B3n_2026" target="_blank" rel="noopener">Taller de Diseño de Interacción 2026</a>
+                    </div>
+                </div>
+                <div class="footer-logos">
+                    <img src="assets/e[ad] Escuela logo.png" alt="e[ad] Escuela de Arquitectura y Diseño" class="footer-logo logo-ead">
+                    <img src="assets/pucv logo.png" alt="PUCV" class="footer-logo logo-pucv">
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="script.js?v=2.5"></script>
 </body>
 </html>

@@ -14,36 +14,86 @@ html, body {
     min-height: 100%;
 }
 
+a {
+    transition: color 0.3s ease, opacity 0.3s ease;
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
+}
+
+a:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 4px;
+}
+
 html {
     scroll-behavior: smooth;
     background-color: #000000;
-    /* TIPOGRAFÍA BASE (TEXTOS): Plus Jakarta Sans */
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
 }
 
-/* Barra de progreso superior sutil */
+/* Custom scrollbar (Navegadores WebKit: Chrome, Edge, Safari, Opera) */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    border: 2.5px solid #000000;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+}
+
+/* Soporte para Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) #000000;
+}
+
 #scroll-progress {
     position: fixed;
     top: 0;
     left: 0;
-    height: 2px;
-    background-color: #ffffff;
+    height: 3.5px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ef4444, #eab308, #22c55e);
     width: 0%;
     z-index: 1100;
     transition: width 0.1s ease-out;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.7), 0 0 15px rgba(139, 92, 246, 0.5);
+    border-radius: 0 2px 2px 0;
 }
 
-/* Paletas de color puras */
-.bg-black { background-color: #000000; color: #ffffff; }
-.bg-white { background-color: #fcfcfc; color: #0a0a0a; }
+.bg-black { 
+    background-color: #000000; 
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center;
+    color: #ffffff; 
+}
+.bg-white { 
+    background-color: #fcfcfc; 
+    background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center;
+    color: #0a0a0a; 
+}
 
 /* ==========================================================================
    2. REGLAS TIPOGRÁFICAS (SISTEMA DE 3 COMPONENTES)
    ========================================================================== */
-
-/* COMPONENTE 1: Títulos Principales (Montserrat - Rígida, geométrica y pesada) */
 .main-title, .section-title, .section-title-center {
     font-family: 'Montserrat', sans-serif;
     font-weight: 900;
@@ -52,7 +102,6 @@ html {
     line-height: 0.95;
 }
 
-/* COMPONENTE 2: Subtítulos, Etiquetas y Elementos UI (Plus Jakarta Sans Estilizada) */
 .tagline, .section-label, .card-tag, .navbar .logo, .navbar .nav-links a {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 600;
@@ -61,13 +110,31 @@ html {
     text-transform: uppercase;
 }
 
-/* COMPONENTE 3: Bloques de Texto y Cuerpo (Plus Jakarta Sans Regular) */
 p {
     font-size: 1.05rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
-    opacity: 0.7;
     font-weight: 400;
+}
+
+.bg-white p {
+    color: rgba(10, 10, 10, 0.7);
+}
+
+.bg-black p {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+p strong, p b {
+    font-weight: 700;
+}
+
+.bg-white p strong, .bg-white p b {
+    color: #0a0a0a;
+}
+
+.bg-black p strong, .bg-black p b {
+    color: #ffffff;
 }
 
 .lead-paragraph {
@@ -79,7 +146,7 @@ p {
 }
 
 /* ==========================================================================
-   3. NAVEGACIÓN (CON FRANJA GRIS PERPETUA Y DESENFOQUE ELEGANTE)
+   3. NAVEGACIÓN
    ========================================================================== */
 .navbar {
     position: fixed;
@@ -91,18 +158,10 @@ p {
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
-    
-    /* Franja gris sutil translúcida */
     background-color: rgba(20, 20, 20, 0.75); 
-    
-    /* Efecto blur para que el contenido de atrás se mimetice suavemente */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    
-    /* Borde inferior milimétrico para estructurar la grilla */
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    
-    /* Color de texto fijo y nítido para romper el ruido visual */
     color: #ffffff; 
     transition: background-color 0.4s, border-color 0.4s;
 }
@@ -122,34 +181,33 @@ p {
 
 .navbar .nav-links a:hover {
     opacity: 1;
+    color: #3b82f6;
 }
 
 /* ==========================================================================
-   4. ACTIVACIONES DE COLOR (SCROLL SPY REFINADO)
+   4. ACTIVACIONES DE COLOR (SCROLL SPY)
    ========================================================================== */
 .navbar .nav-links a.active {
     opacity: 1;
     font-weight: 800;
 }
 
-/* El Juego -> Verde */
 .navbar .nav-links a.active[href="#que-es"],
 .navbar .nav-links a.active[href="index.html#que-es"] { color: #22c55e; }
 
-/* Mecánicas -> Amarillo */
 .navbar .nav-links a.active[href="#como-se-juega"],
 .navbar .nav-links a.active[href="index.html#como-se-juega"] { color: #eab308; }
 
-/* Fundamento -> Azul */
+.navbar .nav-links a.active[href="#pix"],
+.navbar .nav-links a.active[href="index.html#pix"] { color: #3b82f6; }
+
 .navbar .nav-links a.active[href="#fundamento"],
 .navbar .nav-links a.active[href="index.html#fundamento"] { color: #3b82f6; }
 
-/* Experimental -> Rojo (Apuntando a tu nueva ruta newpage.html) */
-.navbar .nav-links a.active[href="newpage.html"] { color: #ef4444; }
-
+.navbar .nav-links a.active[href="newpage.html"] { color: #3b82f6; }
 
 /* ==========================================================================
-   5. PRIMERA PANTALLA / HERO (TÍTULO MONUMENTAL EN EL CENTRO)
+   5. PORTADA / HERO
    ========================================================================== */
 .hero {
     height: 100vh;
@@ -168,7 +226,7 @@ p {
     max-width: 1200px;
     position: relative;
     z-index: 10;
-    pointer-events: none; /* Deja pasar la interacción del mouse hacia la cuadrícula */
+    pointer-events: none;
 }
 
 .main-title {
@@ -177,12 +235,37 @@ p {
 }
 
 /* ==========================================================================
-   6. ESTRUCTURA DE SECCIONES (SCROLL FLUIDO INTERCONECTADO)
+   6. ESTRUCTURA DE SECCIONES
    ========================================================================== */
 .section {
-    padding: 11rem 10%;
+    padding: 8rem 10%;
     position: relative;
     width: 100%;
+}
+
+#que-es {
+    padding-top: 8rem;
+    padding-bottom: 16rem;
+}
+
+#como-se-juega {
+    padding-top: 10rem;
+    padding-bottom: 6rem;
+}
+
+#como-ganar {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+}
+
+#como-ganar .title-column {
+    margin-top: 4.5rem;
+}
+
+@media (max-width: 992px) {
+    #como-ganar .title-column {
+        margin-top: 0;
+    }
 }
 
 .container {
@@ -190,7 +273,6 @@ p {
     margin: 0 auto;
 }
 
-/* Transiciones curvas inspiradas en tus referencias de diseño */
 .rounded-section {
     border-top-left-radius: 40px;
     border-top-right-radius: 40px;
@@ -198,7 +280,6 @@ p {
     z-index: 5;
 }
 
-/* Layout asimétrico en grilla */
 .grid-layout {
     display: flex;
     flex-wrap: wrap;
@@ -221,6 +302,7 @@ p {
 
 .section-title {
     font-size: clamp(2.5rem, 4.5vw, 4rem);
+    margin-bottom: 2.2rem;
 }
 
 /* ==========================================================================
@@ -233,7 +315,6 @@ p {
     margin-bottom: 1rem;
 }
 
-/* Tarjeta destacada oscura */
 .feature-card-dark {
     background-color: #0a0a0a;
     color: #ffffff;
@@ -256,7 +337,6 @@ p {
     opacity: 0.6;
 }
 
-/* Cabecera sección mecánicas */
 .center-header {
     text-align: center;
     max-width: 700px;
@@ -273,7 +353,6 @@ p {
     opacity: 0.5;
 }
 
-/* Línea de tarjetas de mecánicas */
 .cards-stream {
     display: flex;
     flex-direction: column;
@@ -286,14 +365,79 @@ p {
     padding: 3rem;
     border-radius: 20px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 4rem;
-    transition: border-color 0.4s, transform 0.4s;
+    transition: background 0.4s ease, border-color 0.4s, transform 0.4s;
 }
 
 .stream-card:hover {
     border-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
+}
+
+/* Efecto de brillo radial interno por tarjeta en hover */
+#card-roulette:hover {
+    background: radial-gradient(circle at center, rgba(34, 197, 94, 0.08) 0%, #0d0d0d 75%);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+#card-cards:hover {
+    background: radial-gradient(circle at center, rgba(234, 179, 8, 0.08) 0%, #0d0d0d 75%);
+    border-color: rgba(234, 179, 8, 0.3);
+}
+
+#card-pawn:hover {
+    background: radial-gradient(circle at center, rgba(239, 68, 68, 0.08) 0%, #0d0d0d 75%);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+#card-block:hover {
+    background: radial-gradient(circle at center, rgba(59, 130, 246, 0.08) 0%, #0d0d0d 75%);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+#card-grid-win:hover {
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, #0d0d0d 75%);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.card-interactive {
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.roulette-wrapper {
+    position: relative;
+    width: 110px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.roulette-pointer {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 12px solid #ffffff;
+    z-index: 10;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+#cards-canvas, #pawn-canvas, #block-canvas, #grid-win-canvas {
+    display: block;
+    width: 120px;
+    height: 120px;
 }
 
 .card-meta {
@@ -308,6 +452,33 @@ p {
     font-weight: 800;
     font-size: 2rem;
     opacity: 0.2;
+    transition: all 0.4s ease;
+}
+
+/* Iluminación de los números al hacer hover */
+#card-roulette:hover .card-number {
+    opacity: 1;
+    color: #22c55e;
+}
+
+#card-cards:hover .card-number {
+    opacity: 1;
+    color: #eab308;
+}
+
+#card-pawn:hover .card-number {
+    opacity: 1;
+    color: #ef4444;
+}
+
+#card-block:hover .card-number {
+    opacity: 1;
+    color: #3b82f6;
+}
+
+#card-grid-win:hover .card-number {
+    opacity: 1;
+    color: #ffffff;
 }
 
 .stream-card h4 {
@@ -323,51 +494,189 @@ p {
     flex-grow: 1;
 }
 
-/* Lista asimétrica de reglas */
-.asymmetric-list {
-    list-style: none;
-    margin-top: 3rem;
+/* Carrusel de Fotos */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 580px;
+    margin: 0 auto;
+    overflow: visible;
 }
 
-.asymmetric-list li {
+#como-ganar .content-column {
     display: flex;
-    gap: 2.5rem;
-    padding: 2.5rem 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.list-index {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    font-size: 1.2rem;
-    background: #000;
-    color: #fff;
-    width: 38px;
-    height: 38px;
+.carousel-track-wrapper {
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 24px;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.carousel-track {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
-    flex-shrink: 0;
+    background-color: #f7f7f8;
+    padding: 24px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+    transition: opacity 1.2s ease-in-out, visibility 1.2s ease-in-out;
 }
 
-.asymmetric-list li strong {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 800;
-    font-size: 1.3rem;
-    text-transform: uppercase;
+.carousel-slide.active {
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+    transition: opacity 1.2s ease-in-out;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
     display: block;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
 }
 
-.asymmetric-list li p {
-    margin-bottom: 0;
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    background: rgba(10, 10, 10, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s, transform 0.3s, opacity 0.3s;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.carousel-btn:hover {
+    background: rgba(10, 10, 10, 0.95);
+    transform: translateY(-50%) scale(1.06);
+}
+
+.carousel-btn:active {
+    transform: translateY(-50%) scale(0.96);
+}
+
+.btn-prev {
+    left: -22px;
+}
+
+.btn-next {
+    right: -22px;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+}
+
+.carousel-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    transition: background-color 0.3s, width 0.3s, border-radius 0.3s;
+}
+
+.carousel-dot.active {
+    background-color: #0a0a0a;
+    width: 20px;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .carousel-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+    }
+    .btn-prev {
+        left: 8px;
+    }
+    .btn-next {
+        right: 8px;
+    }
+    .carousel-slide {
+        padding: 16px;
+    }
+}
+
+#pix {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 8rem;
+    padding-bottom: 11rem;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#pix .container {
+    width: 100%;
+}
+
+.pix-centered-layout {
+    max-width: 1400px !important;
+    margin: 0 auto;
+    text-align: center;
+}
+
+#pix .section-title {
+    text-align: left;
+}
+
+.pix-iframe-wrapper {
+    width: 100%;
+    margin-top: 3.5rem;
+}
+
+#pix iframe {
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.015);
+    display: block;
+    width: 100%;
+    height: 928px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
 }
 
 /* ==========================================================================
-   8. SECCIÓN FUNDAMENTO (MOCKUP WIREFRAME GLASS)
+   8. SECCIÓN FUNDAMENTO
    ========================================================================== */
 .split-evolution {
     display: flex;
@@ -384,73 +693,98 @@ p {
     flex: 1 1 40%;
 }
 
-.glass-wireframe {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 28px;
-    overflow: hidden;
-    backdrop-filter: blur(12px);
+#fundamento .section-title {
+    margin-bottom: 3.8rem;
+}
+
+.render-acrilicos-wrapper {
     width: 100%;
+    height: 480px;
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 28px;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     max-width: 440px;
     margin: 0 auto;
 }
 
-.glass-header {
-    background: rgba(255, 255, 255, 0.01);
-    padding: 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+.fundamento-action {
     display: flex;
-    gap: 8px;
+    justify-content: center;
+    width: 100%;
+    margin-top: 5rem;
 }
 
-.window-dot {
-    width: 6px;
-    height: 6px;
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 50%;
-}
-
-.glass-content {
-    padding: 4.5rem 2rem;
-}
-
-.terminal-text {
-    font-family: monospace;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.35);
-    letter-spacing: 1px;
-}
-
-.abstract-shape {
-    width: 110px;
-    height: 110px;
-    border: 1px dashed rgba(255, 255, 255, 0.12);
-    border-radius: 50%;
-    margin: 3.5rem auto;
+.btn-experimental {
+    display: inline-block;
+    padding: 14px 32px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #000000;
+    border: 1px solid #000000;
+    border-radius: 30px;
     position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.abstract-shape::after {
+/* Efecto de destello de luz (Shine) al hacer hover */
+.btn-experimental::after {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 55px;
-    height: 55px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
+    top: 0;
+    left: -150%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.35) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
 }
 
-.terminal-sub {
-    font-family: monospace;
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.25);
-    letter-spacing: 2px;
+.btn-experimental:hover::after {
+    left: 150%;
+    transition: left 0.75s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.btn-experimental:hover {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+}
+
+.btn-experimental:active {
+    transform: translateY(0);
+}
+
+.render-acrilicos-wrapper:active {
+    cursor: grabbing;
+}
+
+.render-acrilicos-wrapper canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* ==========================================================================
-   9. COMPONENTES EXTRA PÁGINA EXPERIMENTAL (LABORATORIO)
+   9. COMPONENTES EXTRA PÁGINA EXPERIMENTAL
    ========================================================================== */
 .experimental-code-box {
     background-color: #0f1115;
@@ -459,7 +793,7 @@ p {
     margin-top: 4rem;
     border-radius: 20px;
     font-family: 'Courier New', Courier, monospace;
-    border-left: 4px solid #ef4444; /* Línea de acento roja */
+    border-left: 4px solid #ef4444;
     text-align: left;
 }
 
@@ -471,16 +805,112 @@ p {
 }
 
 /* ==========================================================================
-   10. FOOTER & COMPORTAMIENTOS DINÁMICOS RESPONSIVOS
+   10. FOOTER
    ========================================================================== */
 .site-footer {
     background-color: #000000;
-    padding: 5rem 10%;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    font-size: 0.8rem;
-    opacity: 0.35;
-    letter-spacing: 1px;
+    padding: 6rem 10% 4rem 10%;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+}
+
+.footer-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.footer-meta {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.5;
+    margin-bottom: 0;
+}
+
+.footer-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 4rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.footer-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    flex: 1 1 65%;
+}
+
+.footer-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.footer-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.3;
+}
+
+.footer-item a, .footer-val {
+    font-size: 0.95rem;
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s, color 0.3s;
+}
+
+.footer-item a:hover,
+.footer-item a:active,
+.footer-item a:focus {
+    opacity: 1;
+    color: #3b82f6;
+}
+
+.footer-logos {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    flex-shrink: 0;
+    margin-top: 0.4rem;
+}
+
+.footer-logo {
+    height: 44px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.45;
+    transition: opacity 0.3s, filter 0.3s;
+    filter: brightness(0) invert(1);
+}
+
+.footer-logo:hover {
+    opacity: 1;
+    filter: none;
+}
+
+@media (max-width: 992px) {
+    .footer-bottom-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3rem;
+    }
+    .footer-logos {
+        margin-top: 0;
+        justify-content: flex-start;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 2rem;
+        width: 100%;
+        gap: 2rem;
+    }
 }
 
 .fade-in {
@@ -495,7 +925,7 @@ p {
 }
 
 /* ==========================================================================
-   11. INTERACCIÓN DE GRILLA EN EL HERO (4 COLORES DE MATRIZ)
+   11. INTERACCIÓN DE GRILLA EN EL HERO
    ========================================================================== */
 #grid-interaction-container {
     position: absolute;
@@ -506,27 +936,87 @@ p {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
-    pointer-events: none; /* Deja pasar eventos de scroll y gestos */
+    pointer-events: none;
     z-index: 1;
 }
 
 .grid-pixel {
-    border: 1px solid rgba(255, 255, 255, 0.015); /* Cuadrícula geométrica muy tenue */
-    transition: background-color 0.8s cubic-bezier(0.1, 0.8, 0.25, 1); /* Apagado progresivo */
-    pointer-events: auto; /* Permite la interacción en cada celda */
+    border: 1px solid rgba(255, 255, 255, 0.015);
+    transition: background-color 0.8s cubic-bezier(0.1, 0.8, 0.25, 1);
+    pointer-events: auto;
 }
 
-/* Encendidos instantáneos sin delay de los 4 colores tácticos */
 .grid-pixel.flash-verde { background-color: #94ec94 !important; transition: background-color 0s; }
 .grid-pixel.flash-amarillo { background-color: #fcf464 !important; transition: background-color 0s; }
 .grid-pixel.flash-azul { background-color: #4c6cf4 !important; transition: background-color 0s; }
 .grid-pixel.flash-rojo { background-color: #e4646c !important; transition: background-color 0s; }
 
+.render-caja-wrapper {
+    width: 100%;
+    height: 480px;
+    background-color: #0c0c0e;
+    border-radius: 20px;
+    margin-top: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: grab;
+}
+
+#que-es .render-caja-wrapper {
+    margin-top: 0;
+}
+.render-caja-wrapper:active {
+    cursor: grabbing;
+}
+.render-caja-wrapper canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
 @media (max-width: 992px) {
     .grid-layout, .split-evolution { flex-direction: column; gap: 4rem; }
     .title-column, .content-column, .evolution-info, .evolution-container-visual { flex: 1 1 100%; }
-    .stream-card { flex-direction: column; gap: 1rem; padding: 2rem; }
+    .stream-card { flex-direction: column; gap: 1.5rem; padding: 2rem; align-items: stretch; }
     .card-meta { min-width: auto; }
+    .card-interactive { align-self: center; margin-top: 1rem; }
     .section { padding: 7rem 6%; }
     .main-title { font-size: 3.5rem; }
+}
+
+/* Grilla Interactiva para Secciones con Fondo Blanco */
+.white-grid-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.bg-white .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* ==========================================================================
+   12. TRANSICIÓN SUTIL DE PÁGINA (FADE & BLUR)
+   ========================================================================== */
+body {
+    opacity: 1;
+    filter: blur(0px);
+    transition: opacity 0.5s ease-out, filter 0.5s ease-out;
+}
+body.page-fade-in {
+    opacity: 0;
+    filter: blur(8px);
+    transition: none !important;
+}
+body.page-fade-out {
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.4s ease-in-out, filter 0.4s ease-in-out;
 }

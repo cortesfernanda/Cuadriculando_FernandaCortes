@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Experimental - Cuadriculando</title>
+    <title>Interfaz expresiva - Cuadriculando</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
-    <link rel="stylesheet" href="newpage.css">
+    <link rel="stylesheet" href="newpage.css?v=2.3">
 </head>
-<body>
+<body class="page-fade-in">
 
     <div class="bg-container" id="backgroundLiquido">
         <div class="bg-glow-layer">
@@ -25,6 +25,8 @@
     </div>
 
     <section class="hero-title-container" id="pantallaPortada">
+        <div class="pantalla-bg-glow-1"></div>
+        <div class="pantalla-bg-glow-2"></div>
         <nav class="navbar-local">
             <a href="index.html" class="btn-navbar">Inicio</a>
         </nav>
@@ -46,10 +48,11 @@
 
     <section class="prisma-section-light hidden-screen" id="prismaSection">
         <div class="cuadricula-fondo-clara" id="rejillaClara"></div>
+        
+        <!-- Pista interactiva para la Fase 2 -->
+        <p id="pistaFase2" class="pista-interactiva" style="opacity: 0; pointer-events: none; bottom: 80px; color: rgba(10, 10, 15, 0.6); transition: opacity 0.5s, color 0.5s; z-index: 35;"></p>
 
         <div id="three-prisma-canvas"></div>
-
-
 
         <div class="menu-final-container hidden-menu" id="menuFinal">
             <button class="btn-sutil-opcion" id="btnSiguienteRecorrido">Seguir con el recorrido</button>
@@ -57,7 +60,7 @@
 
         <!-- Indicador de Clic Animado (Tutorial Simplificado) -->
         <div id="indicadorClic" class="indicador-clic-container" style="opacity: 0; pointer-events: none;">
-            <div class="indicador-texto">Haz click</div>
+            <div class="indicador-texto">Haz click en los cuadrados</div>
         </div>
 
         <!-- Botón flotante para finalizar en la Fase 4 (Laboratorio Óptico Rediseñado) -->
@@ -68,7 +71,7 @@
             <div class="victoria-card">
                 <div class="victoria-titulo" id="victoriaTitulo"></div>
                 <div class="victoria-botones">
-                    <button class="btn-sutil-opcion" id="btnIrInicio">Inicio Experimental</button>
+                    <button class="btn-sutil-opcion" id="btnIrInicio">Interfaz expresiva</button>
                     <button class="btn-sutil-opcion" id="btnIrIndex">Página Principal</button>
                 </div>
             </div>
@@ -85,6 +88,6 @@
         </div>
     </div>
 
-    <script src="newpage.js"></script>
+    <script src="newpage.js?v=4.0"></script>
 </body>
 </html>
