@@ -1335,6 +1335,16 @@ document.addEventListener('DOMContentLoaded', () => {
         updateGridOffsets();
         window.addEventListener('resize', resize);
 
+        // Recalcular el tamaño del canvas si las imágenes de la sección cargan después
+        const imgs = section.querySelectorAll('img');
+        imgs.forEach(img => {
+            if (img.complete) {
+                resize();
+            } else {
+                img.addEventListener('load', resize);
+            }
+        });
+
         // Seguir movimiento del mouse en la sección alineando con la grilla centrada
         section.addEventListener('mousemove', (e) => {
             const rect = section.getBoundingClientRect();

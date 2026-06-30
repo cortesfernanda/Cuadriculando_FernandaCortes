@@ -241,21 +241,24 @@ p strong, p b {
     padding: 8rem 10%;
     position: relative;
     width: 100%;
+    scroll-margin-top: 130px;
 }
 
 #que-es {
-    padding-top: 8rem;
-    padding-bottom: 16rem;
+    padding-top: 17rem;
+    padding-bottom: 24rem;
+    scroll-margin-top: 20px;
 }
 
 #como-se-juega {
     padding-top: 10rem;
-    padding-bottom: 6rem;
+    padding-bottom: 18rem;
+    scroll-margin-top: 10px;
 }
 
 #como-ganar {
     padding-top: 8rem;
-    padding-bottom: 8rem;
+    padding-bottom: 24rem;
 }
 
 #como-ganar .title-column {
@@ -283,6 +286,7 @@ p strong, p b {
 .grid-layout {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 8%;
 }
 
@@ -644,6 +648,11 @@ p strong, p b {
     padding-bottom: 11rem;
     padding-left: 5%;
     padding-right: 5%;
+    scroll-margin-top: 10px;
+}
+
+#fundamento {
+    scroll-margin-top: 20px;
 }
 
 #pix .container {
@@ -1007,7 +1016,6 @@ p strong, p b {
    ========================================================================== */
 body {
     opacity: 1;
-    filter: blur(0px);
     transition: opacity 0.5s ease-out, filter 0.5s ease-out;
 }
 body.page-fade-in {
@@ -1019,4 +1027,86 @@ body.page-fade-out {
     opacity: 0;
     filter: blur(8px);
     transition: opacity 0.4s ease-in-out, filter 0.4s ease-in-out;
+}
+
+/* ==========================================================================
+   13. SECCIÓN HERRAMIENTAS USADAS (INTEGRADA EN FUNDAMENTO)
+   ========================================================================== */
+#fundamento {
+    padding-bottom: 12rem;
+}
+
+.herramientas-container {
+    text-align: center;
+    max-width: 1200px;
+    margin: 8rem auto 0 auto;
+}
+
+.herramientas-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem); /* Título más pequeño */
+    color: #000000; /* Negro */
+    text-transform: uppercase; /* Mayúsculas predominantes */
+    letter-spacing: -0.02em;
+    margin-bottom: 4rem;
+}
+
+.herramientas-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3.5rem;
+}
+
+.herramienta-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Tooltip premium y personalizado */
+.herramienta-item::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -32px;
+    background-color: rgba(20, 20, 20, 0.95);
+    color: #ffffff;
+    padding: 0.35rem 0.75rem;
+    font-family: 'Plus Jakarta Sans', sans-serif; /* Tipografía predominante de cuerpo */
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(5px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+.herramienta-item:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.herramienta-logo {
+    height: 60px; /* Tamaño responsivo de los logos */
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(10%) opacity(0.85);
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.herramienta-item:hover {
+    transform: translateY(-5px);
+}
+
+.herramienta-item:hover .herramienta-logo {
+    filter: grayscale(0%) opacity(1);
+    transform: scale(1.08);
 }

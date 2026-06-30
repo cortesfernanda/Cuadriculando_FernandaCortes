@@ -412,14 +412,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ==========================================
     // 1. CONTROL ARRASTRE DE PORTADA
-    // ==========================================
+    // ==========================================================================
+    // VERIFICACIÓN DE INTERSECCIÓN Y AUTO-ALINEACIÓN (GRID SNAP 2x2)
+    // ==========================================================================
     function verificarInterseccion() {
+        // Si el puzzle ya fue completado, no volvemos a calcular colisiones
         if (combinacionCompletada) return;
+
+        // Obtener los rectángulos de colisión físicos (bounding boxes) en pantalla de cada cuadrado
         const rects = [...cuadradosPortada].map(c => c.getBoundingClientRect());
         let todosSeTocan = true;
 
+        // Comparación cruzada (doble iteración) para detectar colisiones tipo AABB
+        // Se valida que cada cuadrado i tenga intersección con cada cuadrado j
         for (let i = 0; i < rects.length; i++) {
             for (let j = i + 1; j < rects.length; j++) {
+                // Si NO se superponen en X o Y, entonces NO se están tocando todos
                 if (!(rects[i].left < rects[j].right && 
                       rects[i].right > rects[j].left && 
                       rects[i].top < rects[j].bottom && 
@@ -429,35 +437,39 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        // Si se cumple la condición de colisión mutua (todas las piezas se tocan)
         if (todosSeTocan) {
             combinacionCompletada = true;
-            playSuccessChime();
+            playSuccessChime(); // Reproducir sonido de éxito
             
-            // Ocultar la pista interactiva de inmediato usando estilos en línea para evitar conflictos de especificidad
+            // Ocultar la pista interactiva ("Junta los cuadros...") con transición suave
             if (textPista) {
                 textPista.style.opacity = '0';
                 textPista.style.transform = 'translateX(-50%) translateY(15px)';
             }
             
+            // Alinear magnéticamente los 4 cuadrados en un mosaico 2x2 perfectamente centrado
             cuadradosPortada.forEach((c) => {
                 c.classList.remove('dragging');
-                c.style.transition = 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+                c.style.transition = 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)'; // Transición elástica de snap
                 
                 const idx = parseInt(c.dataset.index);
-                if (idx === 0) { // Verde -> Top Left
+                // Ubicaciones relativas al centro (50%, 50%) usando un tamaño de celda de 260px
+                if (idx === 0) { // Verde -> Cuadrante Superior Izquierdo
                     c.style.left = 'calc(50% - 260px)';
                     c.style.top = 'calc(50% - 260px)';
-                } else if (idx === 1) { // Azul -> Top Right
+                } else if (idx === 1) { // Azul -> Cuadrante Superior Derecho
                     c.style.left = 'calc(50% - 0px)';
                     c.style.top = 'calc(50% - 260px)';
-                } else if (idx === 2) { // Rojo -> Bottom Left
+                } else if (idx === 2) { // Rojo -> Cuadrante Inferior Izquierdo
                     c.style.left = 'calc(50% - 260px)';
                     c.style.top = 'calc(50% - 0px)';
-                } else if (idx === 3) { // Amarillo -> Bottom Right
+                } else if (idx === 3) { // Amarillo -> Cuadrante Inferior Derecho
                     c.style.left = 'calc(50% - 0px)';
                     c.style.top = 'calc(50% - 0px)';
                 }
                 
+                // Forzar alineación recta sin rotación y desactivar interacciones
                 c.style.transform = 'scale(1) rotate(0deg)';
                 c.style.cursor = 'default';
                 c.style.pointerEvents = 'none';
