@@ -225,12 +225,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 cuadriculaFondo.classList.remove('visible');
             }
 
-            // Ocultar el título de fondo inicialmente (pantalla blanca solo con cuadrícula)
+            // Ocultar el título de fondo inicialmente y animar su entrada
             const titleFondo = document.querySelector('.hero-title-container .texto-fondo');
             if (titleFondo) {
                 titleFondo.style.opacity = '0';
-                titleFondo.style.transform = 'translate(-50%, -50%) scale(0.9)';
-                titleFondo.style.transition = 'opacity 1.2s ease, transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                titleFondo.style.transform = 'translate(-50%, -50%) scale(0.85)';
+                titleFondo.style.transition = 'opacity 1.4s ease-out, transform 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                
+                setTimeout(() => {
+                    titleFondo.style.opacity = '1';
+                    titleFondo.style.transform = 'translate(-50%, -50%) scale(1)';
+                }, 150);
             }
 
             // Ocultar cuadrados principales y la pista
@@ -256,12 +261,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 btnComenzar.classList.add('hidden-start');
             }
 
-            // Crear botón de revelado minimalista y elegante
+            // Crear botón de revelado minimalista y elegante (con entrada retrasada)
             const msgReveal = document.createElement('div');
             msgReveal.id = "introRevealMsg";
             msgReveal.className = "intro-reveal-msg";
             msgReveal.textContent = "Haz scroll";
+            msgReveal.style.opacity = '0';
+            msgReveal.style.transition = 'opacity 1.0s ease, transform 1.0s ease';
             pantallaPortada.appendChild(msgReveal);
+
+            setTimeout(() => {
+                if (!portadaRevelada && msgReveal) {
+                    msgReveal.style.opacity = '1';
+                }
+            }, 1200);
 
             const colClases = ['verde', 'azul', 'rojo', 'amarillo'];
             const colBgColors = [
@@ -330,6 +343,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 cuadradosPortada.forEach((c, idx) => {
+                    // Generar posiciones aleatorias en rangos seguros para que se dispersen de forma única en cada partida
+                    const randomLeft = 10 + Math.random() * 65; // Rango 10% a 75%
+                    const randomTop = 15 + Math.random() * 55;  // Rango 15% a 70%
+                    c.style.left = `${randomLeft}%`;
+                    c.style.top = `${randomTop}%`;
+
                     setTimeout(() => {
                         c.style.opacity = '1';
                         c.style.pointerEvents = 'auto';
@@ -420,12 +439,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 textPista.style.transform = 'translateX(-50%) translateY(15px)';
             }
             
-            cuadradosPortada.forEach((c, idx) => {
+            cuadradosPortada.forEach((c) => {
                 c.classList.remove('dragging');
                 c.style.transition = 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
-                c.style.left = 'calc(50% - 130px)';
-                c.style.top = 'calc(50% - 130px)';
-                c.style.transform = `rotate(${(idx - 1.5) * 6}deg) scale(1)`;
+                
+                const idx = parseInt(c.dataset.index);
+                if (idx === 0) { // Verde -> Top Left
+                    c.style.left = 'calc(50% - 260px)';
+                    c.style.top = 'calc(50% - 260px)';
+                } else if (idx === 1) { // Azul -> Top Right
+                    c.style.left = 'calc(50% - 0px)';
+                    c.style.top = 'calc(50% - 260px)';
+                } else if (idx === 2) { // Rojo -> Bottom Left
+                    c.style.left = 'calc(50% - 260px)';
+                    c.style.top = 'calc(50% - 0px)';
+                } else if (idx === 3) { // Amarillo -> Bottom Right
+                    c.style.left = 'calc(50% - 0px)';
+                    c.style.top = 'calc(50% - 0px)';
+                }
+                
+                c.style.transform = 'scale(1) rotate(0deg)';
                 c.style.cursor = 'default';
                 c.style.pointerEvents = 'none';
             });
@@ -790,9 +823,6 @@ document.addEventListener("DOMContentLoaded", () => {
             capasPrisma.push(mallaCapa);
             grupoPrisma.add(mallaCapa);
         });
-
-        grupoPrisma.rotation.x = 0.4;
-        grupoPrisma.rotation.y = 0.5;
 
         let isDraggingPrisma = false;
         let isSwipingPrisma = false;
@@ -1324,7 +1354,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 });
             }
- 
+
             if (camera) {
                 // Órbita cinemática de entrada de la cámara (lerp en X, Y, Z)
                 camera.position.x += (0 - camera.position.x) * 0.05;
@@ -1334,8 +1364,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Enfocar al centro mientras la cámara esté realizando la órbita de entrada
                 if (Math.abs(camera.position.x) > 0.15) {
                     camera.lookAt(0, 0, 0);
+                    if (grupoPrisma) {
+                        grupoPrisma.rotation.x += (0.4 - grupoPrisma.rotation.x) * 0.05;
+                        grupoPrisma.rotation.y += (0.5 - grupoPrisma.rotation.y) * 0.05;
+                    }
                 }
- 
+
                 if (cameraShakeIntensity > 0.01) {
                     camera.position.x += (Math.random() - 0.5) * cameraShakeIntensity;
                     camera.position.y += (Math.random() - 0.5) * cameraShakeIntensity;
@@ -1343,6 +1377,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else if (Math.abs(camera.position.x) <= 0.15) {
                     camera.position.x = 0;
                     camera.position.y = 0;
+                    camera.lookAt(0, 0, 0); // Alinear la cámara perfectamente recta al finalizar la entrada
                 }
             }
  
@@ -2138,10 +2173,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnIrIndex = document.getElementById('btnIrIndex');
     if (btnIrIndex) {
         btnIrIndex.addEventListener('click', () => {
-            document.body.classList.add('page-fade-out');
-            setTimeout(() => {
+            ejecutarTransicionFinal(() => {
                 window.location.href = 'index.html';
-            }, 400);
+            });
         });
     }
  
